@@ -1,3 +1,10 @@
+'''
+以__开头的,变为一个私有变量(private)
+类似__xxx__, 是特殊变量, 不是private变量
+_一个下划线开头的变量名, 这样的实例变量外部是可以访问的
+但是, 按照约定俗成的规定, 虽然可以被访问,
+ 但是一般视为私有的, 不能随意访问
+'''
 class Student(object):
 	pass
 bart = Student()
@@ -62,3 +69,11 @@ bart.print_score()
 bart.set_score(60)
 # bart.set_score(-60) output: ValueError: bad socre
 bart.print_score()
+
+# 双下划线开头例如__name, python解释器对外把__name变量变成了
+# _Student__name, 所以任然可以使用_Student__name进行访问__name变量
+# !!! 不同版本的python解释器可能会把__name改成不同的变量名
+
+print(bart._Student__name)
+bart._Student__score = 59
+print(bart.get_score())
