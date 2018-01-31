@@ -10,6 +10,7 @@ print (sys.path)
 '''
 import sys
 sys.path.append('./python_learning')
-import basicValueAndFunc.Filter as fil
+import Get_Ob_Info
+print(Get_Ob_Info)
 
 
