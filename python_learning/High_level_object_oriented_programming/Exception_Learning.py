@@ -95,13 +95,30 @@ def main():
 main()
 print('END')
 
-class FooError(ValueError):
-	pass
+# class FooError(ValueError):
+# 	pass
+
+# def foo(s):
+# 	n = int(s)
+# 	if n == 0:
+# 		raise FooError('invalid value: %s' % s)
+# 	return 10 / n
+
+# foo('0')
+# output : __main__.FooError: invalid value: 0
 
 def foo(s):
 	n = int(s)
 	if n == 0:
-		raise FooError('invalid value: %s' % s)
+		raise ValueError('invalid value: %s' % s)
 	return 10 / n
 
-foo('0')
+def bar():
+	try:
+		foo('0')
+	except ValueError as e:
+		print('ValueError!')
+		raise # raise语句不带参数就会把当前错误原样抛出
+			  # 在except中raise一个Error, 还可以把一种类型的错误转换成另一种类型
+bar()
+# output : ValueError: invalid value: 0
