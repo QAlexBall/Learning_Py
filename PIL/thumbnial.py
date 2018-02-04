@@ -1,8 +1,8 @@
 from PIL import Image
-im = Image.open('1.jpg')
+im = Image.open('Image/1.jpg')
 print(im.format, im.size, im.mode)
 # 保存缩略图
 im.thumbnail((200, 100))
-im.save('1thumb.jpg', 'JPEG')
-im1 = Image.open('1thumb.jpg')
+im.save('Image/1thumb.jpg', 'JPEG')
+im1 = Image.open('Image/1thumb.jpg')
 im1.show()

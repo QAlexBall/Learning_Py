@@ -1,6 +1,8 @@
 # 单元测试
 # TDD: Test-Driven Development(测试驱动开发)
 # 单元测试是用来对一个模块, 一个函数或者一个类来进行正确性检验的测试工作
+# 单元测试的测试用例要覆盖常用的输入组合, 边界和异常
+# 单元测试可以有效地测试某个程序模块的行为, 有利于代码重建
 # 确保一个程序模块的行为副歌我们设计的测试用例
 class Dict(dict):
 
@@ -16,6 +18,7 @@ class Dict(dict):
 		self[key] = value
 d = Dict(a=1, b=2)
 d.a = 2
+d.a = 100
 print(d, '\t', d['a'], '\t', d.a,)
 
 import unittest
