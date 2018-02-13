@@ -81,13 +81,14 @@ print('Exit code:', p.returncode)
 # Python的mutiprocessing模块包装了底层的机制, 提供了, Queue, pipes等多种方式来交换数据
 
 # 在父进程中创建两个子进程, 一个往Queue里写数据, 一个从Queue里读数据
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Pool
 import os, time, random
-
+import pickle
 # write
 def write(q):
 	print('Process to write: %s' % os.getpid())
-	for value in ['A', 'B', 'C']:
+	d = ['A', 'B', 'C']
+	for value in d:
 		print('Put %s to queue...' % value)
 		q.put(value)
 		time.sleep(random.random())
@@ -97,6 +98,9 @@ def read(q):
 	while True:
 		value = q.get(True)
 		print('Get %s from queue.' % value)
+# Windows没有fork调用, 因此, multiprocessing需要模拟出fork效果, 
+# 父进程所有Python对象都必须通过pickle序列化再传到子进程去
+import json
 if __name__ == "__main__":
 	# 父进程创建Queue, 并传给各个子进程
 	q = Queue()

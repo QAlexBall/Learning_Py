@@ -89,7 +89,7 @@ print(hasattr(obj, 'power'),
 fn = getattr(obj, 'power')
 print(fn(), obj.power())
 # 只有不知道对象信息的时候, 操去获取对象信息
-# exampl
+# example
 def readImage(fp):
 	if(hasattr(fp, 'read')):
 		return readData(fp)
