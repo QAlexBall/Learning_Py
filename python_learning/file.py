@@ -15,9 +15,3 @@ except ZeroDivisionError:
 	print("you can't divide by zero")
 else:
 	print(answer)
-
-	
-
-
-
-	
