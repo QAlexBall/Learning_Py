@@ -1,7 +1,6 @@
 import numpy as np 
 import cv2
 from matplotlib import pyplot as plt 
-
 # import shutil
 # shutil.copyfile('H:/Image/2.jpg', 'Image/image.jpg')
 
