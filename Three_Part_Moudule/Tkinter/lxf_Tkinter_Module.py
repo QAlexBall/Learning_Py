@@ -25,7 +25,6 @@ class Application(Frame):
 
 # 实例化Application, 并启动消息循环
 app = Application()
-print(dir(app))
 # 设置窗口标题
 app.master.title('Hello')
 # 主消息循环:
