@@ -11,7 +11,7 @@ cap = cv2.VideoCapture(0)
 # Define the codec and create VideoWriter object
 # 利用cv2.VideoWriter_fourcc(*’XVID’)定义视频格式，然后创建视频写入对象。
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('H:/Video/output.avi', fourcc, 20, (640, 480))
+out = cv2.VideoWriter('/path/to/output.avi', fourcc, 20, (640, 480))
 while(True):
 	# Capture frame-by-frame
 	ret, frame = cap.read() # cap.read()返回True/False
