@@ -32,7 +32,6 @@ def now():
 	print('2015-3-25')
 now()
 print(now.__name__)
-
 '''
 input:
 	call now():

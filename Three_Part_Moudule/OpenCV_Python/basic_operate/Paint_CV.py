@@ -23,7 +23,7 @@ cv2.waitKey(0)
 # cv2.waitKey(0)
 
 # 在图片上添加文字
-path = 'H:/Image/1.jpg'
+path = '../Image/image.jpg'
 img = cv2.imread(path)
 print(img.shape[0] / 3, img.shape[1] / 3)
 img = cv2.resize(img, (640, 360), interpolation=cv2.INTER_CUBIC)
