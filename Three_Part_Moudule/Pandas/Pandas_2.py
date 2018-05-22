@@ -30,8 +30,7 @@ output:
 four    11
 one      8
 two      9
-Name: Utah, dtype: int64
-'''
+Name: Utah, dtype: int64'''
 
 print(data.iloc[2])
 '''
@@ -66,4 +65,7 @@ Utah        8    9     10
 New York   12   13     14
 '''
 
+
+# 整数索引
+pd.Series(np.arange(3.))
 
