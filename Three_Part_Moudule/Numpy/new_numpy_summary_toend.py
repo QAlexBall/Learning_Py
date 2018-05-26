@@ -153,3 +153,6 @@ output:
 np.savez_compressed('arrays_compressed.npz', a=arr, b=arr.T)
 arch = np.load('arrays_compressed.npz')
 print(arch['a'])
+print('\n')
+print(arch['b'])
+print(arch['a'] * arch['b'])
