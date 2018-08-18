@@ -10,7 +10,8 @@ def lazy_sum(*args):
 		for n in args:
 			ax = ax + n
 		return ax
-	return sum # 返回的不是求和结果而是求和函数
+	return sum
+
 f = lazy_sum(1, 3, 5, 7, 9)
 g = calc_sum(1,3, 5, 7, 9)
 print('\n', f, '\n', f(), '\n', g)

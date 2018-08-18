@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 python内置了字典: dict的支持, dict全称dictionary, 在其他语言中也成为map,
 使用键-☞(key-value)存储, 具有极快的查找速度.
@@ -17,6 +18,7 @@ d.pop('bob')
 print(d)
 print(d['michael'], d['adam'])
 print('thomas' in d) 
+# -*- coding: utf-8 -*-
 
 d[(1, 2, 3)] = 1000
 # d[(1, [2, 3])] = 2000 error

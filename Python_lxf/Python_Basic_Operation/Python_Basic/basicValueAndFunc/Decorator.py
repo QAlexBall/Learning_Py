@@ -1,4 +1,5 @@
-#一个完整的decorator例子
+# -*- coding: utf-8 -*-
+# 一个完整的decorator例子
 '''
 返回的那个wrapper()函数名字就是'wrapper'，
 所以，需要把原始函数的__name__等属性复制到wrapper()函数中，
