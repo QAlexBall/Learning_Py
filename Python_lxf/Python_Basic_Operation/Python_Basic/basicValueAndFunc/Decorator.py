@@ -7,6 +7,7 @@
 不需要编写wrapper.__name__ = func.__name__这样的代码，
 Python内置的functools.wraps就是干这个事的
 '''
+'''
 class Foo(object):
 	def __init__(self, func):
 		self._func = func
@@ -22,7 +23,7 @@ def bar():
 
 bar()
 '''
-
+'''
 def foo(name, age=None, height=None):
     print("I am %s, age %s, height %s" % (name, age, height))
 
@@ -94,8 +95,8 @@ input:
 	2015-3-25
 	now 
 	[Finished in 0.1s]
-	'''
 '''
+
 
 
 def now():
@@ -132,4 +133,3 @@ now()
 print()
 now = log('execute')(now)
 print(now())
-'''
