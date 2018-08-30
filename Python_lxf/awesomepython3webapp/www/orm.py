@@ -25,7 +25,7 @@ async def create_pool(loop, **kw):
         user=kw['user'],
         password=kw['password'],
         db=kw['db'],
-        charset=kw.get('charset', 'utf-8'),
+        charset=kw.get('charset', 'utf8'),
         autocommit=kw.get('autocommit', True),
         maxsize=kw.get('maxsize', 10),
         minsize=kw.get('minsize', 1),
@@ -44,15 +44,18 @@ async def select(sql, args, size=None):
     global __pool
     async with __pool.get() as conn:
         async with conn.cursor(aiomysql.DictCursor) as cur:
+            # SQL语句的占位符是'?', Mysql占位符是'%s',select()函数在内部自动替换.
             await cur.execute(sql.replace('?', '%s'), args or ())
             if size:
+                # 如果传入size参数,就通过fetchmany()获取指定数量的记录
                 rs = await cur.fetchmany(size)
             else:
+                # 通过fetchall()获取所有记录
                 rs = await cur.fetchall()
         logging.info('rows returned: %s' % len(rs))
         return rs
 
-
+# execute()函数和select()函数不同的是,cursor对象不返回结果集,而是通过rowcount返回结果数
 async def execute(sql, args, autocommit=True):
     log(sql)
     async with __pool.get() as conn:
@@ -120,13 +123,23 @@ class TextField(Field):
         super().__init__(name, 'text', False, default)
 
 
+"""
+通过ModelMetaClass将具体的子类如User的映射信息读取出来
+这样,任何继承自Model的类(比如User),会通过ModelMetaclass扫描映射关系,
+并存储到自身的类属性如__table__,__mapping__中
+
+然后,往Model类添加class方法,就可以让所有子类调用class方法
+"""
 class ModelMetaclass(type):
 
     def __new__(cls, name, bases, attrs):
+        # 排除Model类本身
         if name == 'Model':
             return type.__new__(cls, name, bases, attrs)
+        # 获取table名称
         tableName = attrs.get('__table__', None) or name
         logging.info('found model: %s (table: %s)' % (name, tableName))
+        # 获取所有的Field和主键名
         mappings = dict()
         fields = []
         primaryKey = None
@@ -150,6 +163,7 @@ class ModelMetaclass(type):
         attrs['__table__'] = tableName
         attrs['__primary_key__'] = primaryKey  # 主键属性名
         attrs['__fields__'] = fields  # 除主键外的属性名
+        # 构建默认的SELECT,INSERT,UPDATE,和DELETE语句
         attrs['__select__'] = 'select `%s`, %s from `%s`' % (primaryKey, ', '.join(escaped_fields), tableName)
         attrs['__insert__'] = 'insert into `%s` (%s, `%s`) values (%s)' % (
             tableName, ', '.join(escaped_fields), primaryKey, create_args_string(len(escaped_fields) + 1))
@@ -159,6 +173,14 @@ class ModelMetaclass(type):
         return type.__new__(cls, name, bases, attrs)
 
 
+"""
+首先要定义的是所有ORM映射的基类Model
+Model从dict继承,所以具备dict的功能,同时又实现了特殊方法__getattr__()和__setattr__(),因此又可以像引用普通字段那样写
+>>> user['id']
+123
+>>> user.id
+123
+"""
 class Model(dict, metaclass=ModelMetaclass):
 
     def __init__(self, **kw):
@@ -188,7 +210,7 @@ class Model(dict, metaclass=ModelMetaclass):
 
     @classmethod
     async def findAll(cls, where=None, args=None, **kw):
-        ' find objects by where clause. '
+        """ find objects by where clause. """
         sql = [cls.__select__]
         if where:
             sql.append('where')
@@ -215,7 +237,7 @@ class Model(dict, metaclass=ModelMetaclass):
 
     @classmethod
     async def findNumber(cls, selectField, where=None, args=None):
-        ' find number by select and where. '
+        """ find number by select and where. """
         sql = ['select %s _num_ from `%s`' % (selectField, cls.__table__)]
         if where:
             sql.append('where')
@@ -227,7 +249,7 @@ class Model(dict, metaclass=ModelMetaclass):
 
     @classmethod
     async def find(cls, pk):
-        ' find object by primary key. '
+        """ find object by primary key. """
         rs = await select('%s where `%s`=?' % (cls.__select__, cls.__primary_key__), [pk], 1)
         if len(rs) == 0:
             return None
@@ -240,7 +262,7 @@ class Model(dict, metaclass=ModelMetaclass):
         if rows != 1:
             logging.warn('failed to insert record: affected rows: %s' % rows)
 
-    async def update(self):
+    async def update(self, **kwargs):
         args = list(map(self.getValue, self.__fields__))
         args.append(self.getValue(self.__primary_key__))
         rows = await execute(self.__update__, args)
