@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import asyncio, os, inspect, logging, functools
+import asyncio
+import functools
+import inspect
+import logging
+import os
 from urllib import parse
+
 from aiohttp import web
+
 from Python_lxf.awesomepython3webapp.www.apis import APIError
 
 
@@ -101,12 +107,17 @@ def has_request_arg(fn):
 
 
 class RequestHandler(object):
-    """ 请求处理器,用来封装处理函数 """
+    """
+    请求处理器,用来封装处理函数
+    URL处理函数不一定是一个coroutine,用RequestHandler()来封装一个URL处理函数
+    RequestHandler是一个类,由于定义了__call__()方法,因此可以将其
+    """
+
     def __init__(self, app, fn):
         # app: an application instance for registering the fn
         # fn: a request handler with a particular HTTP method and path
         self.app = app
-        self.func = fn
+        self._func = fn
         self._has_request_arg = has_request_arg(fn)
         self._has_var_kw_arg = has_var_kw_arg(fn)
         self._has_named_kw_args = has_named_kw_args(fn)
@@ -117,7 +128,7 @@ class RequestHandler(object):
         """ 请求分析, request handler, must a coroutine that accepts a request instance
         as its only argument and returns a streamresponse derived instance """
         kw = None
-        if self._has_var_kw_arg or self._has_named_kw_args or self._request_kw_args:
+        if self._has_var_kw_arg or self._has_named_kw_args or self._required_kw_args:
             # 当传入处理函数具有 关键字参数集 或 命名关键字参数 或 request参数
             if request.method == 'POST':
                 # POST请求预处理
@@ -177,5 +188,58 @@ class RequestHandler(object):
                     # 当存在关键字参数未被赋值时返回,
                     # 例如 一般的账号注册时,没填入密码就提交注册申请时,提示密码未输入
                     return web.HTTPBadRequest('Missing arguments: %s' % name)
+        logging.info('call with args: %s' % str(kw))
+        try:
+            r = await self._func(**kw)
+            # 最后调用处理函数,并传入请求参数,进行请求处理
+            return r
+        except APIError as e:
+            return dict(error=e.error, data=e.data, message=e.message)
 
 
+def add_static(app):
+    """添加静态资源路径"""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')  # 获取包含'static'的绝对路径
+    # os.path.dirname(os.path.abspath(__file__)) 返回脚本所在目录的绝对路径
+    app.router.add_static('/static/', path)  # 添加静态资源路径
+    logging.info('add static %s => %s' % ('/static/', path))
+
+
+def add_route(app, fn):
+    """ 将处理函数注册到web服务程序的路由当中 """
+    method = getattr(fn, '__method__', None)  # 获取 fn 的 __method__ 属性的值,无则为None
+    path = getattr(fn, '__route__', None)  # 获取 fn 的 __route__ 属性的值,无则为None
+    if path is None or method is None:
+        raise ValueError('@get or @post not define in %s.' % str(fn))
+    if not asyncio.iscoroutinefunction(fn) and not inspect.isgeneratorfunction(fn):
+        # 当处理函数不是协程时,封装为协程函数
+        fn = asyncio.coroutine(fn)
+    logging.info('add route %s %s => %s(%s)' % \
+                 (method, path, fn.__name__, ', '.join(inspect.signature(fn).parameters.key())))
+    app.router.add_route(method, path, RequestHandler(app, fn))
+
+
+def add_routes(app, moudle_name):
+    """ 自动把handler模块符合条件的函数注册 """
+    n = moudle_name.rfind('.')
+    if n == (-1):
+        # 没有匹配时
+        mod = __import__(moudle_name, globals(), locals())
+        # import一个模块,获取模块名__name__
+    else:
+        # 添加模块属性 name,并赋值给mod
+        name = moudle_name[n + 1:]
+        mod = getattr(__import__(moudle_name[:n], globals(), locals(), [name]), name)
+    for attr in dir(mod):
+        # dir(mod)获取模块所有属性
+        if attr.startswith('_'):
+            # 略过所有私有属性
+            continue
+        fn = getattr(mod, attr)
+        # 获取属性的值,可以是一个method
+        if callable(fn):
+            method = getattr(fn, '__method__', None)
+            path = getattr(fn, '__route__', None)
+            if method and path:
+                # 对已经修饰过的URL处理函数注册到web服务的路由中
+                add_route(app, fn)
