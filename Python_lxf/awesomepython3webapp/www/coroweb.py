@@ -110,7 +110,9 @@ class RequestHandler(object):
     """
     请求处理器,用来封装处理函数
     URL处理函数不一定是一个coroutine,用RequestHandler()来封装一个URL处理函数
-    RequestHandler是一个类,由于定义了__call__()方法,因此可以将其
+    RequestHandler是一个类,由于定义了__call__()方法,因此可以将其实例视为一个函数
+    RequestHandler目的就是从URL函数中分析其需要接收的参数,从request中获取必要的参数,调用URL函数,
+    然后把结果转换为Web.Response对象,这样,就完全符合aiohttp框架的要求
     """
 
     def __init__(self, app, fn):
@@ -228,7 +230,7 @@ def add_routes(app, moudle_name):
         # import一个模块,获取模块名__name__
     else:
         # 添加模块属性 name,并赋值给mod
-        name = moudle_name[n + 1:]
+        name = moudle_name[n+1:]
         mod = getattr(__import__(moudle_name[:n], globals(), locals(), [name]), name)
     for attr in dir(mod):
         # dir(mod)获取模块所有属性
