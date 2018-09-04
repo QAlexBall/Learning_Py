@@ -1,4 +1,5 @@
 import logging
+
 from jinja2 import Environment, FileSystemLoader
 
 from Python_lxf.awesomepython3webapp.www.coroweb import add_routes, add_static

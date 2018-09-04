@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 import aiomysql
+from boto.compat import StandardError
 
 
 def log(sql, args=()):
@@ -17,7 +18,7 @@ def log(sql, args=()):
 
 
 async def create_pool(loop, **kw):
-    logging.info('create database connection pool...')
+    logging.info('create db connection pool...')
     global __pool
     __pool = await aiomysql.create_pool(
         host=kw.get('host', 'localhost'),
