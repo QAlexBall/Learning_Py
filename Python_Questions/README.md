@@ -93,6 +93,8 @@ name == hello
 
 
 
+***
+
 ### Reduce
 
 * 当需要对一个列表进行一些计算并返回结果时,可以使用Reduce
@@ -104,4 +106,48 @@ product = reduce((lambda x, y: x * y), [1, 2, 3, 4])
 print(product)
 # Output: 24
 ```
+
+
+
+***
+
+### Python enumerate()函数
+
+* enumerate()函数用于讲一个可比案例的数据对象(如列表,元组和字符串)组合为一个索引序列,同事列出数据和数据下标,一般用在for循环当中
+* enumerate(sequence, [start=0])
+  - sequence --- 一个序列,迭代器或其他支持迭代对象
+  - start --- 下标起始位置
+  - 返回enumerate(枚举)对象
+
+```shell
+>>>seasons = ['Spring', 'Summer', 'Fall', 'Winter']
+>>> list(enumerate(seasons))
+[(0, 'Spring'), (1, 'Summer'), (2, 'Fall'), (3, 'Winter')]
+>>> list(enumerate(seasons, start=1))       # 小标从 1 开始
+[(1, 'Spring'), (2, 'Summer'), (3, 'Fall'), (4, 'Winter')]
+
+# 普通的for循环
+>>>i = 0
+>>> seq = ['one', 'two', 'three']
+>>> for element in seq:
+...     print i, seq[i]
+...     i +=1
+... 
+0 one
+1 two
+2 three
+
+# for循环使用enumerate
+>>>seq = ['one', 'two', 'three']
+>>> for i, element in enumerate(seq):
+...     print i, element
+... 
+0 one
+1 two
+2 three
+```
+
+
+
+***
 
