@@ -31,7 +31,6 @@ loop.run_until_complete(init(loop))
 loop.run_forever()
 """
 
-
 def init_jinja2(app, **kw):
     logging.info('init jinja2...')
     options = dict(
