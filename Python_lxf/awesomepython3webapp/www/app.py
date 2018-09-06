@@ -1,7 +1,7 @@
 import logging
-
 from jinja2 import Environment, FileSystemLoader
 
+from Python_lxf.awesomepython3webapp.www.config import configs
 from Python_lxf.awesomepython3webapp.www.coroweb import add_routes, add_static
 
 logging.basicConfig(level=logging.INFO)
@@ -57,10 +57,25 @@ async def logger_factory(app, handler):
     async def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
         # await asyncio.sleep(0.3)
-        return await handler(request)
-
+        return (await handler(request))
     return logger
 
+async def auth_factory(app, handler):
+    async def auth(request):
+        logging.info('check user: %s %s' % (request.method, request.path))
+        request.__user__ = None
+        from Python_lxf.awesomepython3webapp.www.handlers import COOKIE_NAME
+        cookie_str = request.cookie.get(COOKIE_NAME)
+        if cookie_str:
+            from Python_lxf.awesomepython3webapp.www.handlers import cookie2user
+            user = await cookie2user(cookie_str)
+            if user:
+                logging.info('set current user: %s' % user.email)
+                request.__user__ = user
+            if request.path.startswith('/manage/') and (request.__user__ is None or not request.__user__.admin):
+                return web.HTTPFound('/signin')
+            return (await handler(request))
+        return auth
 
 async def data_factory(app, handler):
     async def parse_data(request):
@@ -122,9 +137,9 @@ def datetime_filter(t):
 
 
 async def init(loop):
-    await orm.create_pool(loop=loop, host='127.0.0.1', port=3306, user='www-data', password='www-data', db='awesome')
+    await orm.create_pool(loop=loop, **configs.db)
     app = web.Application(loop=loop, middlewares=[
-        logger_factory, response_factory
+        logger_factory, auth_factory, response_factory
     ])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')

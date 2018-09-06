@@ -138,7 +138,7 @@ class RequestHandler(object):
                     # 无正文类型信息时返回
                     return web.HTTPBadRequest('Missing Content-Type')
                 ct = request.content_type.lower()
-                if ct.startwith('application/json'):
+                if ct.startswith('application/json'):
                     # 处理函数JSON类型的数据,传入参数字典中
                     params = await request.json()
                     if not isinstance(params, dict):

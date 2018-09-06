@@ -1,6 +1,5 @@
 import asyncio
 import logging
-
 import aiomysql
 from boto.compat import StandardError
 
@@ -8,15 +7,12 @@ from boto.compat import StandardError
 def log(sql, args=()):
     logging.info('SQL: %s' % sql)
 
-
 """
 创建连接池
 我们需要创建一个全局连接池,每个HTTP请求都可以从连接池中直接获取数据库连接.
 使用连接池的好处是不必频繁地打开和关闭数据库连接,而是能复用就尽量复用.
 连接池由全局变量__pool存储,缺省情况下将编码设置为utf-8,自动提交事务.
 """
-
-
 async def create_pool(loop, **kw):
     logging.info('create db connection pool...')
     global __pool
@@ -33,13 +29,7 @@ async def create_pool(loop, **kw):
         loop=loop
     )
 
-
-"""
-Select
-要执行SELECT语句,我们用select函数执行,需要传入SQL语句和SQL参数
-"""
-
-
+# Select 要执行SELECT语句,我们用select函数执行,需要传入SQL语句和SQL参数
 async def select(sql, args, size=None):
     log(sql, args)
     global __pool
@@ -74,13 +64,11 @@ async def execute(sql, args, autocommit=True):
             raise
         return affected
 
-
 def create_args_string(num):
     L = []
     for n in range(num):
         L.append('?')
     return ', '.join(L)
-
 
 class Field(object):
 
@@ -93,36 +81,30 @@ class Field(object):
     def __str__(self):
         return '<%s, %s:%s>' % (self.__class__.__name__, self.column_type, self.name)
 
-
 class StringField(Field):
 
     def __init__(self, name=None, primary_key=False, default=None, ddl='varchar(100)'):
         super().__init__(name, ddl, primary_key, default)
-
 
 class BooleanField(Field):
 
     def __init__(self, name=None, default=False):
         super().__init__(name, 'boolean', False, default)
 
-
 class IntegerField(Field):
 
     def __init__(self, name=None, primary_key=False, default=0):
         super().__init__(name, 'bigint', primary_key, default)
-
 
 class FloatField(Field):
 
     def __init__(self, name=None, primary_key=False, default=0.0):
         super().__init__(name, 'real', primary_key, default)
 
-
 class TextField(Field):
 
     def __init__(self, name=None, default=None):
         super().__init__(name, 'text', False, default)
-
 
 """
 通过ModelMetaClass将具体的子类如User的映射信息读取出来
@@ -172,7 +154,6 @@ class ModelMetaclass(type):
             tableName, ', '.join(map(lambda f: '`%s`=?' % (mappings.get(f).name or f), fields)), primaryKey)
         attrs['__delete__'] = 'delete from `%s` where `%s`=?' % (tableName, primaryKey)
         return type.__new__(cls, name, bases, attrs)
-
 
 """
 首先要定义的是所有ORM映射的基类Model

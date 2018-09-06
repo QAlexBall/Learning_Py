@@ -56,8 +56,9 @@ except ImportError:
     pass
 
 configs = toDict(configs)
+print(configs)
 
-a = Dict(('a', 'b'), (0, 1, 3))
-print(a)
-print(a.a, ' ', a.b)  # __getattr__ return self[key] = value
+# a = Dict(('a', 'b'), (0, 1, 3))
+# print(a)
+# print(a.a, ' ', a.b)  # __getattr__ return self[key] = value
 # print(a.c) __getattr__ except KeyError
