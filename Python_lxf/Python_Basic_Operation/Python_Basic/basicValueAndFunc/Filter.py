@@ -5,6 +5,7 @@ def not_empty(s):
 	return s and s.strip()
 
 a = list(filter(is_odd, [1, 2, 4, 5, 6, 7, 8]))
+a = list(filter(lambda n : n % 2 == 1, [1, 2, 4, 5, 6, 7, 8, 9]))
 b = list(filter(not_empty, ['A', '' , 'B', None, 'C', ' ']))
 # filter 函数返回的是一个Iterator, 也就是一个惰性序列
 
