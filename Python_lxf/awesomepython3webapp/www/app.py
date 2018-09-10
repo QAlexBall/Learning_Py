@@ -46,7 +46,6 @@ def init_jinja2(app, **kw):
             env.filters[name] = f
     app['__templating__'] = env
 
-
 async def logger_factory(app, handler):
     async def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
@@ -82,7 +81,6 @@ async def data_factory(app, handler):
                 logging.info('request form: %s' % str(request.__data__))
             return await handler(request)
         return parse_data
-
 
 async def response_factory(app, handler):
     async def response(request):
@@ -123,7 +121,6 @@ async def response_factory(app, handler):
         return resp
     return response
 
-
 def datetime_filter(t):
     delta = int(time.time() - t)
     if delta < 60:
@@ -134,7 +131,6 @@ def datetime_filter(t):
         return u'%s天前' % (delta // 86400)
     dt = datetime.fromtimestamp(t)
     return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
-
 
 async def init(loop):
     await orm.create_pool(loop=loop, **configs.db)

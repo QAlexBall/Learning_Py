@@ -10,6 +10,12 @@ var
     action = '{{ action }}';
 function initVM(blog) {
     var vm = new Vue({
+        {#
+        初始化Vue时,指定三个参数,
+        el: 根据选择器查找绑定的View, 这里是#vm,就是id为vm的DOM, 对应的是一个<div>标签;
+        data: JavaScript对象表示的Model,初始化为{name: '', summary: '', content: ''};
+        methods: View可以触发的JavaScript函数,submit就是提交表单时触发的函数
+        #}
         el: '#vm',
         data: blog,
         methods: {
