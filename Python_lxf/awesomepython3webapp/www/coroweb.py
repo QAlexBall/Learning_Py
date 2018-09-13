@@ -17,7 +17,6 @@ def get(path):
     Define decorator @get('/path')
     @get装饰器,给处理函数绑定URL和HTTP method-GET属性
     """
-
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kw):
@@ -28,7 +27,6 @@ def get(path):
         return wrapper
 
     return decorator
-
 
 # 定义一个@post()
 def post(path):
@@ -220,17 +218,19 @@ def add_route(app, fn):
     app.router.add_route(method, path, RequestHandler(app, fn))
 
 
-def add_routes(app, moudle_name):
+def add_routes(app, module_name):
     """ 自动把handler模块符合条件的函数注册 """
-    n = moudle_name.rfind('.')
+    n = module_name.rfind('.')
+    # rfind()返回字符串最后一次出现的位置
     if n == (-1):
         # 没有匹配时
-        mod = __import__(moudle_name, globals(), locals())
+        mod = __import__(module_name, globals(), locals())
+        # print(mod)    <module 'handlers' from '/home/alex/WorkPlace/Python_Module/Python_lxf/awesomepython3webapp/www/handlers.py'>
         # import一个模块,获取模块名__name__
     else:
         # 添加模块属性 name,并赋值给mod
-        name = moudle_name[n+1:]
-        mod = getattr(__import__(moudle_name[:n], globals(), locals(), [name]), name)
+        name = module_name[n+1:]
+        mod = getattr(__import__(module_name[:n], globals(), locals(), [name]), name)
     for attr in dir(mod):
         # dir(mod)获取模块所有属性
         if attr.startswith('_'):
