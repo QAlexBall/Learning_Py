@@ -190,6 +190,13 @@ async def get_blog(id):
         'comments': comments
     }
 
+@get('/manage/comments')
+def manage_comments(*, page='1'):
+    return {
+        '__template__': 'manage_blogs.html',
+        'page_index': get_page_index(page)
+    }
+
 @get('/manage/blogs')
 def manage_blogs(*, page=1):
     return {
