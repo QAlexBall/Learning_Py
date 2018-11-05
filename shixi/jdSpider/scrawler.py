@@ -61,10 +61,14 @@ def analyzingGoodsPage(goodsText, targetUrl, count):
     soup = BeautifulSoup(goodsText, 'lxml')
     print(soup.findAll(name='meta', attrs={"name": "keywords"}))
     if soup.findAll(name='meta', attrs={"name": "keywords"}):
-        good_Id = targetUrl.split('/')[3].split('.')[0]
+        if getHostName(targetUrl) == "https://item.m.jd.com/":
+            good_Id = targetUrl.split('/')[4].split('.')[0]
+        else:
+            good_Id = targetUrl.split('/')[3].split('.')[0]
+        print(good_Id)
         good_Name = soup.findAll(name='meta', attrs={"name": "keywords"})[0].attrs['content']
-        pduid = 1540968060261294253038
-        pduid += random.randint(-10, 10)
+        pduid = 1530962060261394253038
+        pduid += random.randint(-1000, 1000)
         priceUrl = "https://p.3.cn/prices/mgets?pduid=" + str(pduid) + "&skuIds=J_" + str(good_Id)
         priceInfo = doRequestToURL(priceUrl)
         print(priceInfo)
@@ -103,7 +107,6 @@ def RunSpider(totalUrlList, goodsPageURLs, uselessPageURLs):
                     print("==================== relax 15s... ==========================")
                     time.sleep(15)
 
-
             for newUrl in newUrls:
                 newUrlsHostName = getHostName(newUrl)
                 if newUrlsHostName not in uselessPageURLs and newUrl not in totalUrlList:
@@ -111,18 +114,27 @@ def RunSpider(totalUrlList, goodsPageURLs, uselessPageURLs):
         time.sleep((random.uniform(1, 3)))
 
 firstPageURL = "https://item.jd.com/10058164.html"
-firstPageURL1 = "https://www.zxcoder.com"
-firstPageURL2 = "https://e.jd.com/ebook.html/"
-# firstPageURL = "https://unionen.jd.com/new/facebook/login.html"
-# firstPageURL = "https://item.jd.com/1470067627.html"  // it's a bad url for test
-goodsPageURLs = ["https://item.jd.com/", "https://item.jd.hk/", "https://www.joybuy.com", "https://e.jd.com/"]
-uselessPageURLs = ["https://channel.jd.com/", "https://www.jd.com/", "https://help.jd.com/"
-                   , "https://yp.jd.com/", "https://mall.jd.com/", "https://club.jd.com/",
-                   "https://help.joybuy.com/", "https://m.jd.com/", "https://so.m.jd.com/"
-                   , "https://unionen.jd.com/", "https://sale.jd.com/", "https://book.jd.com/"]
-totalUrlList = [firstPageURL1, "https://e.jd.com/30417075.html", firstPageURL2, firstPageURL]
+goodsPageURLs = ["https://item.jd.com/",
+                 "https://item.jd.hk/",
+                 "https://e.jd.com/",
+                 "https://item.m.jd.com/"]
+uselessPageURLs = ["https://channel.jd.com/",
+                   "https://help.jd.com/",
+                   "https://yp.jd.com/",
+                   "https://mall.jd.com/",
+                   "https://club.jd.com/",
+                   "https://help.joybuy.com/",
+                   "https://m.jd.com/",
+                   "https://so.m.jd.com/",
+                   "https://unionen.jd.com/",
+                   "https://sale.jd.com/",
+                   "https://book.jd.com/",
+                   "https://www.joybuy.com/",
+                   "https://mjbbs.jd.com/",
+                   "https://helpcenter.jd.com/"]
+totalUrlList = [firstPageURL]
 resultPath = "/home/alex/Desk/Spider/"
-fileName = "goodsInfo-2018-11-03-v3.txt"
+fileName = "goodsInfo-2018-11-04.txt"
 
 print('Spider running...')
 print("====================================")
