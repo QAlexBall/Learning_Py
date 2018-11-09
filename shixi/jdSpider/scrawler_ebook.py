@@ -65,21 +65,23 @@ def analyzingGoodsPage(goodsText, targetUrl, count):
             good_Id = targetUrl.split('/')[4].split('.')[0]
         else:
             good_Id = targetUrl.split('/')[3].split('.')[0]
-        print(good_Id)
         good_Name = soup.findAll(name='meta', attrs={"name": "keywords"})[0].attrs['content']
         pduid = 1530962060261394253038
         pduid += random.randint(-1000, 1000)
         priceUrl = "https://p.3.cn/prices/mgets?pduid=" + str(pduid) + "&skuIds=J_" + str(good_Id)
         priceInfo = doRequestToURL(priceUrl)
-        print(priceInfo)
+        ebook_type = soup.find_all(r'<a href="(.*?)" target="_blank">(.*?)</a>', soup)
+        # print(soup)
+        print(ebook_type)
         if priceInfo is not None:
             good_Price = priceInfo.split(":")[1].split(",")[0]
             with open(resultPath + fileName, "a") as goodInfo:
                 # goodInfo.write("*****************No." + str(count) + "******************\n")
                 # goodInfo.write("goodId: " + str(good_Id) + "\nname: " +
                            # good_Name + "\npriceInfo: " + priceInfo + "price: " + good_Price + "\n")
-                print(good_Name.split(',')[0] + " " + good_Price.split("\"")[1])
-                goodInfo.write(good_Name.split(',')[0] + "--,--" + good_Price.split("\"")[1] + "\n")
+                print(priceInfo)
+                print(good_Name + " " + good_Price.split("\"")[1] + " " + priceInfo.split('\"')[7])
+                goodInfo.write(good_Name + "--,--" + good_Price.split("\"")[1] + "--,--" + priceInfo.split('\"')[7] + "\n")
 
     else:
         count -= 1
@@ -116,10 +118,9 @@ def RunSpider(totalUrlList, goodsPageURLs, uselessPageURLs):
                     totalUrlList.append(newUrl)
         time.sleep((random.uniform(1, 3)))
 
-firstPageURL = "https://e.jd.com/products/5272-5278.html"
-goodsPageURLs = ["https://e.jd.com/"]
-uselessPageURLs = ["https://item.jd.com/",
-                   "https://www.jd.com/",
+firstPageURL = "https://item.jd.com/100000971956.html"
+goodsPageURLs = ["https://e.jd.com/", "https://item.jd.com/", "https://item.jd.com/"]
+uselessPageURLs = ["https://www.jd.com/",
                    "https://channel.jd.com/",
                    "https://help.jd.com/",
                    "https://yp.jd.com/",
@@ -136,7 +137,7 @@ uselessPageURLs = ["https://item.jd.com/",
                    "https://helpcenter.jd.com/"]
 totalUrlList = [firstPageURL]
 resultPath = "/home/alex/Desktop/"
-fileName = "e_book.txt"
+fileName = "st.txt"
 
 print('Spider running...')
 print("====================================")
