@@ -118,7 +118,7 @@ def RunSpider(totalUrlList, goodsPageURLs, uselessPageURLs):
                     totalUrlList.append(newUrl)
         time.sleep((random.uniform(1, 3)))
 
-firstPageURL = "https://item.jd.com/100000971956.html"
+firstPageURL = "https://item.jd.com/100000952538.html"
 goodsPageURLs = ["https://e.jd.com/", "https://item.jd.com/", "https://item.jd.com/"]
 uselessPageURLs = ["https://www.jd.com/",
                    "https://channel.jd.com/",
