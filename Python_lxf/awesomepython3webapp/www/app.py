@@ -134,16 +134,29 @@ def datetime_filter(t):
 
 async def init(loop):
     await orm.create_pool(loop=loop, **configs.db)
-    app = web.Application(loop=loop, middlewares=[
+    app = web.Application(middlewares=[
         logger_factory, auth_factory, response_factory
     ])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')
     add_static(app)
+    # srv = await web.run_app(app, host='127.0.0.1', port=9000)
     srv = await loop.create_server(app.make_handler(), '127.0.0.1', 9000)
     logging.info("server started at http://127.0.0.1:9000")
     return srv
 
+
 loop = asyncio.get_event_loop()
 loop.run_until_complete(init(loop))
 loop.run_forever()
+# def init():
+#     app = web.Application(middlewares=[
+#         logger_factory, auth_factory, response_factory
+#     ])
+#     app['configs'] = configs.db
+#     init_jinja2(app, filter=dict(datetime=datetime_filter))
+#     add_routes(app, 'handlers')
+#     add_static(app)
+#     web.run_app(app, host='127.0.0.1', port=9000)
+#     logging.info("server started at http://127.0.0.1:9000")
+# init()
