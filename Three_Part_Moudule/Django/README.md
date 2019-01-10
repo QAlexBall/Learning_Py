@@ -177,3 +177,180 @@ Running migrations:
   Applying polls.0001_initial... OK
   Applying sessions.0001_initial... OK
 ```
+这个migrate命令选中所有还没有执行过的迁移(Django通过在数据库中创建一个特殊的表django_migrations来跟踪执行过哪些迁移)并应用在数据库上-也就是将对象模型的更改同步到数据库结构上
+
+迁移是非常强大的功能,它能让你在开发过程中持续的改变数据库结构而不需要重新删除和创建表-它专注于数据库平滑升级而不会丢失数据.
+改变模型需要三步:
+* 编辑models.py文件,改变模型
+* 运行python manage.py makemigrations为模型的改变生成迁移文件.
+* 运行python manage.py migrate来应用数据库迁移
+
+数据库迁移被分解生成和应用两个命令是为了让你能够在代码控制系统上提交迁移数据并使其能在多个应用里使用.
+
+#### 初试API
+进入交互python命令行,尝试一下Django创建的各种API.
+使用这个命令而不简单使用"python"是因为manage.py会设置DJANGO_SETTINGS_MODULE环境变量,这个变量会让Django根据mysite/settings.py文件来设置Python包的导入路径.
+```bash
+➜  myweb git:(master) ✗ python manage.py shell
+Python 3.6.5 |Anaconda, Inc.| (default, Apr 29 2018, 16:14:56)
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.4.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from polls.models import Choice, Question
+# No questions are in the system yet.
+In [2]: Question.objects.all() 
+Out[2]: <QuerySet []>
+# Create a new Question.
+# Support for time zones is enabled in the default settins file, so
+# Django expects a datetime with tzinfo for pub_data.Use timezone.Now()
+# instead of datetime.datatime.now() and it will do the right thing.
+In [3]: from django.utils import timezone
+In [6]: q = Question(question_text="What's new?", pub_date=timezone.now())
+# Save the object into the database.You have to call save() explicitly.
+In [7]: q.save()
+# Now it has an ID.
+In [ ]: q.id
+Out[ ]: 1
+# Access model field values via Python attributes.
+In [8]: q.question_text
+Out[8]: "What's new?"
+In [9]: q.pub_date
+Out[9]: datetime.datetime(2019, 1, 10, 9, 47, 43, 192475, tzinfo=<UTC>)
+# objects.all() displays all the questions in the database.
+In [10]: Question.objects.all()
+Out[10]: <QuerySet [<Question: Question object (1)>]>
+```
+<Question: Question object (1)>对于我们了解这个对象的细节没有什么帮助.让我们通过编辑Question模型的代码(位于polls/models.py中)来修复这个问题.给Question和Choice增加__str__()方法.
+
+```python
+class Question(models.Model):
+    # ...
+    def __str__(self):
+        return self.question_text
+
+class Choice(models.Model):
+    # ...
+    def __str__(self):
+        return self.choice_text
+```
+新加入的import datetime和from django.utils import timezone分贝导入了Python的标准datetime模块和Django中和时区相关的django.utils.timezone工具模块.保存文件然后通过python manage.py shell命令再次打开Python交互式命令行
+```bash
+>>> from polls.models import Choice, Question
+
+# Make sure our __str__() addition worked.
+>>> Question.objects.all()
+<QuerySet [<Question: What's up?>]>
+
+# Django provides a rich database lookup API that's entirely driven by
+# keyword arguments.
+>>> Question.objects.filter(id=1)
+<QuerySet [<Question: What's up?>]>
+>>> Question.objects.filter(question_text__startswith='What')
+<QuerySet [<Question: What's up?>]>
+
+# Get the question that was published this year.
+>>> from django.utils import timezone
+>>> current_year = timezone.now().year
+>>> Question.objects.get(pub_date__year=current_year)
+<Question: What's up?>
+
+# Request an ID that doesn't exist, this will raise an exception.
+>>> Question.objects.get(id=2)
+Traceback (most recent call last):
+    ...
+DoesNotExist: Question matching query does not exist.
+
+# Lookup by a primary key is the most common case, so Django provides a
+# shortcut for primary-key exact lookups.
+# The following is identical to Question.objects.get(id=1).
+>>> Question.objects.get(pk=1)
+<Question: What's up?>
+
+# Make sure our custom method worked.
+>>> q = Question.objects.get(pk=1)
+>>> q.was_published_recently()
+True
+
+# Give the Question a couple of Choices. The create call constructs a new
+# Choice object, does the INSERT statement, adds the choice to the set
+# of available choices and returns the new Choice object. Django creates
+# a set to hold the "other side" of a ForeignKey relation
+# (e.g. a question's choice) which can be accessed via the API.
+>>> q = Question.objects.get(pk=1)
+
+# Display any choices from the related object set -- none so far.
+>>> q.choice_set.all()
+<QuerySet []>
+
+# Create three choices.
+>>> q.choice_set.create(choice_text='Not much', votes=0)
+<Choice: Not much>
+>>> q.choice_set.create(choice_text='The sky', votes=0)
+<Choice: The sky>
+>>> c = q.choice_set.create(choice_text='Just hacking again', votes=0)
+
+# Choice objects have API access to their related Question objects.
+>>> c.question
+<Question: What's up?>
+
+# And vice versa: Question objects get access to Choice objects.
+>>> q.choice_set.all()
+<QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
+>>> q.choice_set.count()
+3
+
+# The API automatically follows relationships as far as you need.
+# Use double underscores to separate relationships.
+# This works as many levels deep as you want; there's no limit.
+# Find all Choices for any question whose pub_date is in this year
+# (reusing the 'current_year' variable we created above).
+>>> Choice.objects.filter(question__pub_date__year=current_year)
+<QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
+
+# Let's delete one of the choices. Use delete() for that.
+>>> c = q.choice_set.filter(choice_text__startswith='Just hacking')
+>>> c.delete()
+```
+#### 介绍管理页面
+Django全自动地根据模型创建后台界面.
+
+###### 创建一个管理员账号
+```bash
+➜  myweb git:(master) ✗ python manage.py createsuperuser 
+Username (leave blank to use 'example'): admin
+Email address: name@outlook.com
+Password: 
+Password (again): 
+Superuser created successfully.
+```
+###### 启动开发服务器
+Django的管理界面默认就是启动的,如果开发服务器未启动,用以下命令启动它.
+```bash
+➜  myweb git:(master) ✗ python manage.py runserver
+```
+###### 进入管理站点页面
+登陆后,你将会看到集中可编辑的内容: 用户和组.它们是由django.contrib.auth提供的,这是Django开发的认证框架
+###### 向管理页面中加入投票应用
+投票应用并没有在索引页面里显示
+只需要做一件事: 告诉管理页面,问题Question对象需要被管理.打开polls/admin.py文件
+```python
+from django.contrib import admin
+from .models import Question
+# Register your models here.
+admin.site.register(Question)
+```
+重新加载后
+![register_question](register_question.png)
+###### 体验便捷的管理功能
+现在我们向管理页面注册了问题Question类.Django知道它应该被显示在索引页里:
+注意事项:
+* 这个表单是从问题Question模型中自动生成的
+* 不同的字段类型(日期时间段DateTimeField,字符字段CharField)会生成对应的HTML输入控件.每个类型字段都知道它们该如何在管理页面显示自己
+* 每个日期时间段DateTimeField都有JavaScript写的快捷按钮.日期有转到今天(Today)的快捷键和一个弹出式日历界面.时间有设为现在(Now)的快捷键和一个列出常用时间的方便的弹出式列表
+页面底部提供了几个选项:
+* 保存(Save) -保存改变,然后返回对象列表
+* 保存并继续编辑（Save and continue editing） - 保存改变，然后重新载入当前对象的修改界面。
+* 保存并新增（Save and add another） - 保存改变，然后添加一个新的空对象并载入修改界面。
+* 删除（Delete） - 显示一个确认删除页面。
+
+## part3
