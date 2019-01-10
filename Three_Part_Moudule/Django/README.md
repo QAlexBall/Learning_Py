@@ -109,3 +109,12 @@ class Choice(models.Model):
 为了在我们的工程中包含这个应用,我们需要配置类INSTALL_APPS中添加设置.
 因为PollsConfig类写在polls/apps.py中,所以它的点式路径是'polls.apps.PollsConfig'.
 在文件mysite/settings.py中INSTALL_APPS添加点式路径.
+```bash
+➜  myweb git:(master) ✗ python manage.py makemigrations polls
+Migrations for 'polls':
+  polls/migrations/0001_initial.py:
+    - Create model Choice
+    - Create model Question
+    - Add field question to choice
+```
+通过makemigrations命令,Django会检测你对模型文件的修改
