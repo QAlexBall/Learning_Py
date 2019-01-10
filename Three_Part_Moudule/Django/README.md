@@ -1,3 +1,4 @@
+## part 1
 ```bash
 ➜  Django git:(master) ✗ django-admin startproject mysite
 ➜  mysite git:(master) ✗ tree 
@@ -67,6 +68,7 @@ route是一个匹配URL的准则(类似正则表达式).当Django响应一个请
 * name:
 为URL取名使得在Django的任意地方唯一地引用它,尤其是在模板中
 
+## part 2
 #### 数据库配置
 打开mysite/settings.py.这是包含了Django项目设置的Python模块
 通常这个配置文件使用SQLite作为默认浏览器.
@@ -117,4 +119,61 @@ Migrations for 'polls':
     - Create model Question
     - Add field question to choice
 ```
-通过makemigrations命令,Django会检测你对模型文件的修改
+通过makemigrations命令,Django会检测你对模型文件的修改,并且把修改的部分存储为一次迁移
+**迁移(migration)**是Django对于模型定义(也就是数据库结构)的变化的存储形式,也只是磁盘上的文件
+Django有一个自动执行数据库迁移并同步管理数据库机构的命令
+```bash
+➜  myweb git:(master) ✗ python manage.py sqlmigrate polls 0001
+BEGIN;
+--
+-- Create model Choice
+--CREATE TABLE "polls_choice" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "choice_text" varchar(200) NOT
+ NULL, "votes" integer NOT NULL);
+--
+-- Create model Question
+--
+CREATE TABLE "polls_question" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "question_text" varchar(200) NOT NULL, "pub_date" datetime NOT NULL);
+--
+-- Add field question to choice
+--
+ALTER TABLE "polls_choice" RENAME TO "polls_choice__old";
+CREATE TABLE "polls_choice" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "choice_text" varchar(200) NOT NULL, "votes" integer NOT NULL, "question_id" integer NOT NULL REFERENCES "polls_question" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "polls_choice" ("id", "choice_text", "votes", "question_id") SELECT "id", "choice_text", "votes", NULL FROM "polls_choice__old";
+DROP TABLE "polls_choice__old";
+CREATE INDEX "polls_choice_question_id_c5b4b260" ON "polls_choice" ("question_id");
+COMMIT;
+```
+请注意一下几点:
+* 输出内容和谁用的数据库有关,上面的输出示例用的是PostgreSQL
+* 数据库的表名是由应用名(polls)和模型名的小写形式(question和choice)连接而来.
+* 主键(IDs)会被自动创建(也可以自己定义).
+* 默认的,Django会在外键字段名后追加字符串"_id".
+* 外键关系由FOREIGN KEY生成.不用关心DEFERRABLE部分,它只告诉PostgreSql,请在事务全都执行完后在创建外键关系
+* 生成的SQL语句是为你所用的数据库定制的,所以哪些和数据库有关的字段类型,比如auto_increment(MySQL),serial(PostgreSQL)和integer primary key autoincrement(SQLite),Django会帮你自动处理.哪些和引号相关的事情-例如,是使用单引号还是双引号,一样会被自动处理
+* 这个sqlmigrate命令并没有真正在你的数据库中执行迁移,它只是把命令输出到屏幕上,让你看看Django认为需要执行哪些SQL语句.这在你想看看Django到底准备做什么,或者当你是数据库管理员,需要写脚本来批量处理数据库时会很有用.
+
+python manage.py check ;这个命令帮助你检查项目中的问题，并且在检查过程中不会对数据库进行任何操作。
+
+现在再次运行migrate命令,在数据库里创建新定义的模型的数据表
+```bash
+➜  myweb git:(master) ✗ python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, polls, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying polls.0001_initial... OK
+  Applying sessions.0001_initial... OK
+```
