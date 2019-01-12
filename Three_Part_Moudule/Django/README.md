@@ -1,4 +1,5 @@
 ## part 1
+此文档内容来自于https://docs.djangoproject.com
 ```bash
 ➜  Django git:(master) ✗ django-admin startproject mysite
 ➜  mysite git:(master) ✗ tree 
@@ -392,4 +393,100 @@ urlpatterns = [
     # ex: /polls/5/vote/
     path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
+```
+当请求"/polls/34/"时,Django会载入mysite.urls模块,因为这在配置ROOT_URLCONF中设置了.
+然后Django寻找名为urlpatterns变量并且按序匹配正则表达式.再找到'polls/',它切掉了匹配的
+文本("polls/"), 将剩余文本--"34/"",发送至'polls.urls'URLconf作进一步处理.这里剩余
+文本匹配了'<int:question_id>/',使得Django调用detail():
+```python
+detail(request=<HttpRequest object>, question_id=34)
+```
+question_id=34由<int:question_id>匹配生成.使用尖括号"捕获这部分URL,且以关键字参数的
+形式发送给视图函数.上述字符串:question_id>部分重新定义了将被用于匹配模式的变量名
+而int:则是一个转换器决定了应该以什么变量类型匹配这部分的URL路径.
+
+##### 一个真正有用的视图
+每个视图必须要做的只有两件事: **返回一个包含被请求页面内容的HttpResponse对象,或者抛出一个异常**
+Django只要求返回的是一个HttpResponse,或者抛出一个异常
+在index()函数里插入一些新的内容,让它能展示数据库里以发布日期排序的5个投票问题,以空格分割:
+```python
+# polls/views.py
+def index(request):
+    latest_question_list = Question.object.order_by('-pub_date')[:5]
+    output = ', '.join([q.question_text for q in latest_question_list])
+    return HttpResponse(output)
+```
+项目的 TEMPLATES 配置项描述了 Django 如何载入和渲染模板。默认的设置文件设置了 DjangoTemplates 后端，并将 APP_DIRS 设置成了 True。这一选项将会让 DjangoTemplates 在每个 INSTALLED_APPS 文件夹中寻找 "templates" 子目录。这就是为什么尽管我们没有像在第二部分中那样修改 DIRS 设置，Django 也能正确找到 polls 的模板位置的原因。
+###### 模板命名空间
+虽然现在可以将模板文件直接放在polls/templates文件夹中(而不是再创建一个匹配的模板文件)如果有一个模板文件正好和另一个应用中的某个模板文件重名,Django没有办法区分它们.我们需要帮助Django选择正确的模板,最简单的方法就是把它们放入各自的命名空间,也就是把这些模板放入一个和自身应用重名的子文件夹里.
+
+将下面的代码输入到刚刚创建的模板文件中
+```html
+<!-- polls/templates/polls/index.html -->
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}\
+        <li><a href="/polls/{{ question.id }}/"> {{ question.question_text }} </a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p> No polls are available. </p>
+{% endif %}
+```
+然后更新一下polls/views.py里的index视图来使用模板.
+```python
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    templates = loader.get_template('polls/index.html')
+    contect = {
+        'latest_question_list': latest_question_list,
+    }
+    return HttpResponse(templates.render(contect, request))
+```
+上述代码的作用是,载入polls/index.html模板文件,并且向它传递一个上下文(context).这个上下文是一个字典,它将模板内的变量映射为Python对象.
+
+##### 一个快捷函数： render()
+**载入模板,填充上下文,再返回它生成的HttResponse对象**是一个非常有用的操作流程.于是Django提供了一个快捷函数,我们用它来重写index()视图:
+```python
+# polls/views.py
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    templates = loader.get_template('polls/index.html')
+    context = {
+        'latest_question_list': latest_question_list,
+    }
+    return render(request, 'polls/index.html', context)
+```
+注意到我们不需要导入loader和HttpResponse.不过如果你还要其他函数(比如说detail,result,和vote)需要用到它的话,就需要保持HttpResponse的导入.
+
+##### 抛出404错误
+现在来处理投票详情视图--它会显示指定投票的问题标题.下面是这个视图的代码:
+```python
+# polls/views.py
+def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'polls/detail.html', {'question': question})
+```
+这里有个新原则.如果指定问题ID所对应的问题不存在,这个视图就会抛出一个Http404异常.
+
+##### get_object_or_404()
+尝试用get()函数获取一个对象,如果不存在就抛出Http404错误也是一个普遍的流程.Django也提供了一个快捷函数,下面是修改后的详情detail()视图代码.
+```python
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/detail.html', {'question': question})
+```
+get_object_or_404（）函数将Django模型作为其第一个参数和任意数量的关键字参数，并将其传递给模型管理器的get（）函数。如果对象不存在，它会引发Http404。
+
+##### 使用模板系统
+```html
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
 ```
