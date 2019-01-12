@@ -77,12 +77,12 @@ route是一个匹配URL的准则(类似正则表达式).当Django响应一个请
 * 如果使用的是 SQLite，数据库将是你电脑上的一个文件，在这种情况下， NAME 应该是此文件的绝对路径，包括文件名。**默认值 os.path.join(BASE_DIR, 'db.sqlite3') 将会把数据库文件储存在项目的根目录**
 通常， INSTALLED_APPS 默认包括了以下 Django 的自带应用：
 
-* django.contrib.admin -- 管理员站点， 你很快就会使用它。
+* django.contrib.admin -- 管理员站点， 你很快就会使用它
 * django.contrib.auth -- 认证授权系统。
 * django.contrib.contenttypes -- 内容类型框架。
 * django.contrib.sessions -- 会话框架。
 * django.contrib.messages -- 消息框架。
-* django.contrib.staticfiles -- 管理静态文件的框架。
+* django.contrib.staticfiles -- 管理静态文件的框架.
 
 ```bash
 ➜  myweb git:(master) ✗ python manage.py migrate
@@ -354,3 +354,42 @@ admin.site.register(Question)
 * 删除（Delete） - 显示一个确认删除页面。
 
 ## part3
+Django中的视图的概念是[**一类具有相同功能和模板的网页的集合**]
+在Django中网页和其他内容都是从视图派生而来.每一个视图表现为一个简单的Python函数(或者说方法,如果是在基于类的视图里的话).Django会根据用户请求的URL来选择使用哪个视图.(更准确的说,是根据URL中域名之后的部分).
+一个URL模型定义了某种URL的基本格式:
+/newsarchive/<year>/<month>/.
+为了将URL和视图关联起来,Django使用了'URLconfs'来配置.
+URLconf将URL模式映射到视图.
+
+#####　编写跟多的视图
+```python
+# polls/views.py
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+
+```
+把这些新视图添加进polls.urls模块里,只需添加几个url()函数调用就行
+```python
+# polls/urls.py
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    # ex: /polls/
+    path('', views.index, name='index'),
+    # ex: /polls/5/
+    path('<int:question_id>/', views.detail, name='detail'),
+    # ex: /polls/5/results/
+    path('<int:question_id>/results/', views.results, name='results'),
+    # ex: /polls/5/vote/
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+```
