@@ -470,7 +470,7 @@ def detail(request, question_id):
         raise Http404("Question does not exist")
     return render(request, 'polls/detail.html', {'question': question})
 ```
-这里有个新原则.如果指定问题ID所对应的问题不存在,这个视图就会抛出一个Http404异常.
+这里有个新原则.如果**指定问题ID所对应的问题不存在**,这个视图就会抛出一个Http404异常.
 
 ##### get_object_or_404()
 尝试用get()函数获取一个对象,如果不存在就抛出Http404错误也是一个普遍的流程.Django也提供了一个快捷函数,下面是修改后的详情detail()视图代码.
@@ -489,4 +489,30 @@ get_object_or_404（）函数将Django模型作为其第一个参数和任意数
     <li>{{ choice.choice_text }}</li>
 {% endfor %}
 </ul>
+```
+模板系统同意使用点符号访问变量的属性.示例{{ question.question_text }}中,首先Django尝试对question对象使用字典查找(也就是obj.get(str)操作),如果失败了就尝试属性查找(也就是obj.str操作),
+结果是成功了.如果这一操作也失败的话,将会尝试列表查找(也就是obj[int]操作).
+在{% for %}循环中发生的函数调用: question.choice_set.all被解释为Python代码
+question.choice_set.all(),将会返回一个可迭代的Choice对象,,这一对象可以再{% for %}标签内部使用.
+
+##### 去除模板中的硬编码URL
+在polls/index.html里编写投票链接时,链接是硬编码的:
+```html
+<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+```
+问题在于,硬编码和强耦合的链接,对于一个包含很多应用的项目来说,修改起来是十分困难的.然而,因为在polls.urls的url()函数中通过name参数为URL定义了名字,可以用{% url %}标签来替代它:
+```html
+<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+```
+
+##### 为URL名称添加命名空间.
+项目只有一个应用，polls.在一个真实的Django项目中,可能会有更多应用.Django通过在根URLconf中添加命名空间来分辨重名的URL.在 polls/urls.py 文件中稍作修改，加上 app_name 设置命名空间：
+```python
+app_name = 'polls'
+```
+在polls/index.html文件href=部分修改成:
+```html
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        <li><a href="{% url 'polls:results' question.id %}">results</a></li>
+        <li><a href="{% url 'polls:vote' question.id %}">vote</a></li>
 ```
