@@ -517,7 +517,7 @@ app_name = 'polls'
         <li><a href="{% url 'polls:vote' question.id %}">vote</a></li>
 ```
 ## part 4
-##### 编写一个简单的表单
+### 编写一个简单的表单
 跟新polls/detail.html,让它包含一个HTML<form>元素
 ```html
 <h1>{{ question.question_text }}</h1>
@@ -574,4 +574,71 @@ def vote(request, question_id):
   ```
   这和part 3中的detail()视图几乎一模一样.唯一不同的是模板的名字,我们将在稍后解决这个冗余的问题,现在创建一个polls/results.html模板:
   ```html
-  ```
+  <h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes}} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again? </a>
+```
+我们的 vote() 视图代码有一个小问题。代码首先从数据库中获取了 selected_choice 对象，接着计算 vote 的新值，最后把值存回数据库。如果网站有两个方可同时投票在 同一时间 ，可能会导致问题。同样的值，42，会被 votes 返回。然后，对于两个用户，新值43计算完毕，并被保存，但是期望值是44。这个问题被称为竞争条件.
+
+### 使用通用视图
+detail()(在part 3中)和reuslts()视图都很简单--并且,像上面提到的那样,存在冗余问题,用来显示一个投票列表的index()视图和它们类似.
+这些视图反映基本的Web开发中一个常见的情况:根据URL中的参数从数据库中获取数据,载入模板文件然后返回渲染后的模板.由于这种情况特别常见,Django提供一种快捷方式,叫做"通用视图"系统.
+通用视图将常见的模式抽象化,可以使你在编写应用时甚至不需要编写Python代码.
+让我们将我们的投票应用转换程使用通用视图系统,这样我们可以删除许多我们的代码.我们仅仅需要做一下几步来完成转换:
+1. 转换URLconf
+2. 删除一些旧的,不需要的视图
+3. 基于Django的通用视图引入新的视图
+
+###### 为什么要重构代码?
+一般来说,当编写一个Django应用时,你应该先评估一下通用视图是否可以解决你的问题,你应该在一开始使用它,而不是进行到一半时重构代码.本教程目前为止是有意将重点放在"艰难的地方"编写视图,这是为将重点放在核心概念上.
+
+##### 改良URLconf
+首先打开,polls/urls.py并修改成
+```python
+urlpatterns = [
+    # path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote')
+]
+```
+第二个和第三个匹配准则中,路径字符串匹配模式的名称已经由<question_id>改为<pk>
+
+##### 改良视图
+下一步,我们将删除旧的index, detail, 和results视图,并用Django的通用视图代替.
+```python
+# polls/views.py
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+    # 对于 ListView，自动生成的 context 变量是 question_list。
+    # 为了覆盖这个行为，我们提供 context_object_name 属性，表示我们想使用latest_question_list。
+
+    def get_queryset(self):
+        # Return the last five published questions
+        return Question.objects.order_by('pub_date')[:5]
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+```
+我们这里使用两个通用视图: ListView和DetailView.这两个视图分别抽象"显示一个对象列表"和"显示一个特定类型对象的详细信息页面"这两种概念.
+* 每个通用视图需要知道它将作用于哪个模型.这由model属性提供
+* DetailView期望从URL中捕获名为"pk"的主键值,随意我们为通用视图把question_id改成pk
+
+默认情况下,通用视图DetailView使用一个叫做<app name>/<model name>_detail.html的模板.在我们的例子中,它将使用"polls/question_detail.html"模板.template_name属性是来告诉Django使用一个指定的模板名字,而不是自动生成默认名字.我们也为results列表视图指定了template_name--这确保results视图和detail视图在渲染时具有不同的外观,即使他们后台都是同一个DetailView.
+
+类似地,ListView使用一个叫做<app name>/<model name>_list.html的默认模板,我们使用template_name来告诉ListView使用我们创建的已经存在的"polls/index.html"模板.
+
+在之前的部分中,提供模板文件时都带有一个包含question和latest_question_list变量的context.对于DetailView,question变量会自动提供--因为我们使用Django的模型(Question),Django能够为context变量决定一个合适的名字.然而对于ListView,自动生成的变量是question_list.为了覆盖这个行为,我们提供context_object_list.作为一种替换方案,你可以改变你的模板来匹配新的context变量--这是一种更便捷的方法,告诉Django使用你想使用的变量名.
