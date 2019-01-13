@@ -642,3 +642,5 @@ class ResultsView(generic.DetailView):
 类似地,ListView使用一个叫做<app name>/<model name>_list.html的默认模板,我们使用template_name来告诉ListView使用我们创建的已经存在的"polls/index.html"模板.
 
 在之前的部分中,提供模板文件时都带有一个包含question和latest_question_list变量的context.对于DetailView,question变量会自动提供--因为我们使用Django的模型(Question),Django能够为context变量决定一个合适的名字.然而对于ListView,自动生成的变量是question_list.为了覆盖这个行为,我们提供context_object_list.作为一种替换方案,你可以改变你的模板来匹配新的context变量--这是一种更便捷的方法,告诉Django使用你想使用的变量名.
+
+## Part 5
