@@ -1,5 +1,5 @@
-## part 1
 此文档内容来自于https://docs.djangoproject.com
+## part 1
 ```bash
 ➜  Django git:(master) ✗ django-admin startproject mysite
 ➜  mysite git:(master) ✗ tree 
@@ -516,3 +516,62 @@ app_name = 'polls'
         <li><a href="{% url 'polls:results' question.id %}">results</a></li>
         <li><a href="{% url 'polls:vote' question.id %}">vote</a></li>
 ```
+## part 4
+##### 编写一个简单的表单
+跟新polls/detail.html,让它包含一个HTML<form>元素
+```html
+<h1>{{ question.question_text }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="chice{{ forloop.counter }}" 
+    value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+{% endfor %}
+<input type="submit" value="Vote">
+</form>
+```
+* 上面的模板在Question的每个Choice前添加一个单选按钮.每个按钮的value属性是对应的各个Choice的ID.每个单选按钮的name是"choice".这意味着,当有人选择一个单选按钮并提交表单时,它将发送一个POST数据choice=#,其中#为选择的Choice的ID.这是HTML表单的基本概念.
+* 我们设置表单的action为{% url 'polls:vote' question.id %},并设method="post"``.使用method="post"(与其相对的是``method="get"``)是非常重要的,因为这个提交表单的行为会改变服务器端的数据.无论何时,当你需要创建一个改变服务器数据的表单时,请使用``method="post".这不是Django的特定技巧;这是优秀的网站开发技巧.
+* forloop.counter指示for标签已经循环多少次
+* 由于创建一个POST表单(它具有修改数据的作用),所以我们要小心跨站点请求伪造.Django已经拥有一个用来防御它的非常容易使用的系统.简而言之,素有针对内部URL的POST表单都应该使用{% csrf_token %}模板标签.
+
+创建一个Django视图来处理提交的数据.
+```python
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except(KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting from
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data.This prevents data from being posted twice if user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
+```
+* request.POST是一个类字典对象,让你可以通过关键字的名字获取提取的数据.这个例子中,
+  request.POST['choice']以字符串形式返回选择的Choice的ID.request.POST的值永远是字符串.
+* 注意,Django还以同样的方式提供request.GET用于访问GET数据--但我们在代码中显示地使用request.POST,以保证数据智能通过POST调用改动.
+* 如果request.POST['choice']数据中没有提供choice,POST将引发一个KeyError.上面的代码检查KeyError,如果没有给出choice将重新显示Question表单和一个错误信息.
+* 在增加Choice的得票数之后,代码返回一个HttpResponseRedirect而不是常用的HttpResponse,HttpResponseRedirect只接收一个参数:用户将要被重定向的URL(请继续看下去,将会解释如何构造这个例子中的URL)
+* 正如上面的Python注释指出的那样，在成功处理POST数据之后，应该总是返回一个HttpResponseRedirect.这个提示不是Django特有的;这只是一个很好的Web开发实践.
+* 在这个例子中,我们在HttpResponseRedirect的构造函数中使用reverse()函数.这个函数避免了我们在视图函数中硬编码URL.它需要我们给出我们**想要跳转的视图的名字**和**该视图所对应的URL模式中需要给该视图提供的参数**.reverse()调用返回一个这样的字符串:
+  '/polls/3/results/'
+  其中3是question.id的值.重定向的URL将调用'results'视图来显示最终的页面.,正如part 3提到的,HttpResponse是一个HttpRequest对象.当有人对Question进行投票后,vote()视图将请求重定向到Question的结果界面.
+  ```python
+  # polls/views.py
+  def results(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
+  ```
+  这和part 3中的detail()视图几乎一模一样.唯一不同的是模板的名字,我们将在稍后解决这个冗余的问题,现在创建一个polls/results.html模板:
+  ```html
+  ```
