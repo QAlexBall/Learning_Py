@@ -644,3 +644,277 @@ class ResultsView(generic.DetailView):
 在之前的部分中,提供模板文件时都带有一个包含question和latest_question_list变量的context.对于DetailView,question变量会自动提供--因为我们使用Django的模型(Question),Django能够为context变量决定一个合适的名字.然而对于ListView,自动生成的变量是question_list.为了覆盖这个行为,我们提供context_object_list.作为一种替换方案,你可以改变你的模板来匹配新的context变量--这是一种更便捷的方法,告诉Django使用你想使用的变量名.
 
 ## Part 5
+### 自动化测试简介
+
+###开始第一个测试
+##### 首先需要有个bug
+在polls应用中有一个bug需要被修复: 我们的要求是如果Question是在一天之内发布的,Question.was_published_recently()方法将会返回True,然而现在这个方法在Question的pub_data字段比当前时间还晚时也会返回True.
+```bash
+>>> import datetime
+>>> from django.utils import timezone
+>>> from polls.models import Question
+>>> # create a Question instance with pub_date 30 days in the future
+>>> future_question = Question(pub_date=timezone.now() + datetime.timedelta(days=30))
+>>> # was it published recently?
+>>> future_question.was_published_recently()
+True
+```
+##### 创建一个测试来暴露这个bug
+按照惯例,Django应用的测试应该写在应用的tests.py文件里.测试系统会自动在所有以tests开头的文件里寻找并执行测试代码.
+将下面代码写入polls应用里的tests.py文件内:
+```python
+# polls/tests.py
+class QuestionModelTests(TestCase):
+
+    def test_was_published_recently_with_future_question(self):
+        """
+        was_published_recently() retruns False for questions whose pub_date is in the future
+        """
+        time = timezone.now() + datetime.timedelta(days=30)
+        future_question = Question(pub_date=time)
+        self.assertIs(future_question.was_published_recently(), False)
+```
+我们创建了一个django.test.TestCase的子类,并添加了一个方法,此方法建立一个pub_date时未来某天的Question实例.然后检查它的was_published_recently()方法的返回值--应该时False.
+
+##### 运行测试
+```bash
+➜  myweb git:(master) ✗ python manage.py test polls
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+F
+======================================================================
+FAIL: test_was_published_recently_with_future_question (polls.tests.QuestionModelTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alex/WorkPlace/Python_Module/Three_Part_Moudule/Django/myweb/polls/tests.py", line 18, in test_was_published_recently_with_future_question
+    self.assertIs(future_question.was_published_recently(), False)
+AssertionError: True is not False
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+```
+一下时自动化测试的运行过程:
+* python manage.py test polls将会寻找polls应用的测试代码
+* 它找到了django.test.TestCase的一个子类
+* 它创建一个特殊的数据库供测试使用
+* 它在类中寻找测试方法--以test开头的方法
+* 在test_was_published_recently_with_future_question方法中,它创建了一个pub_date值为30天后的Question实例.
+* 接着assertIs()方法,发现was_published_recently()返回了True,而我们期望它返回False.
+
+##### 修复这个bug
+我们早已知道,当pub_date为未来某天时,Question.was_published_recently(self)应该返回False.我们修改models.py里的方法,让它只在日期是过去式的时候才返回True:
+```python
+    def was_published_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
+        # return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+```
+然后重新运行测试:
+```bash
+➜  myweb git:(master) ✗ python manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+Destroying test database for alias 'default'...
+```
+
+##### 更全面的测试
+现在考虑更全面的测试was_published_recently()这个方法以确定它的安全性,然后就可以把这个方法稳定下来了.
+我们在上次写的类里增加两个测试,来更全面的测试这个方法.
+```python
+    def test_was_published_recently_with_old_question(self):
+        """
+        was_published_recently() returns False for question whose pub_date is older than 1 day.False
+        """
+        time = timezone.now() - datetime.timedelta(days=1, seconds=1)
+        old_question = Question(pub_date=time)
+        self.assertIs(old_question.was_published_recently(), False)
+    
+    def test_was_published_recently_with_recent_question(self):
+        """
+        was_published_recently() returns True for questions whose pub_date is within the last day.
+        """
+        time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
+        recent_question = Question(pub_date=time)
+        self.assertIs(recent_question.was_published_recently(), True)
+```
+现在我们有三个测试来确保Question.was_published_recently()方法对于过去,最近,和将来的三种情况都返回正确的值.
+
+### 测试视图
+我们的投票应用对所有问题都一视同仁:它将会发布所有问题,也包括pub_date字段是未来的问题.我们应该改善这一点.如果pub_date设置为未来某天,这应该被解释为这个问题将在所填写的时间点才被发布,而在这之前是不可见的.
+
+##### 针对视图的测试
+为了修复上述bug,我们这次先编写测试,然后再去改代码.事实上.这是一个简单的「测试驱动」开发模式的实例,但其实这两者的顺序不太重要。
+在我们的第一个测试中,我们关注代码的内部行为.我们通过模拟用户使用浏览器访问被测试的应用来检查代码行为是否符合预期.
+在我们动手之前，先看看需要用到的工具们。
+
+##### Django测试工具之Client
+Django提供了一个供测试使用的Client来模拟用户和视图层代码的交互.我们能在test.py设置shell中使用它.
+我们依照惯例从shell开始,首先我们要做一些在test.py里不是必须的准备工作.第一步是在shell中配置测试环境.
+```bash
+>>> from django.test.utils import setup_test_environment
+>>> setup_test_environment()
+
+>>> from django.test import Client
+>>> # create an instance of the client for our use
+>>> client = Client()
+
+>>> # get a response from '/'
+>>> response = client.get('/')
+Not Found: /
+>>> # we should expect a 404 from that address; if you instead see an
+>>> # "Invalid HTTP_HOST header" error and a 400 response, you probably
+>>> # omitted the setup_test_environment() call described earlier.
+>>> response.status_code
+404
+>>> # on the other hand we should expect to find something at '/polls/'
+>>> # we'll use 'reverse()' rather than a hardcoded URL
+>>> from django.urls import reverse
+>>> response = client.get(reverse('polls:index'))
+>>> response.status_code
+200
+>>> response.content
+b'\n    <ul>\n    \n        <li><a href="/polls/1/">What&#39;s up?</a></li>\n    \n    </ul>\n\n'
+>>> response.context['latest_question_list']
+<QuerySet [<Question: What's up?>]>
+```
+setup_test_environment()提供了一个模板渲染器,允许我们为responses添加一些额外的属性,例如response.context,未安装此app无法使用此功能.
+
+##### 改善视图代码
+现在投票列表会显示将来的投票(pub_date值是未来的某天).我们来修复这个问题
+```python
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
+```
+我们需要改进get_queryset()方法,让它能通过将Question的pub_date属性与timezone.now()相比较来判断是否应该显示此Question.
+```python
+    def get_queryset(self):
+        """
+        Return the last five published questions(not including those set to be published in the future).
+        """
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
+```
+Question.objects.filter(pub_date__lte=timezone.now())返回一个查询集,其中包含pub_date小于或等于的问题-即早于或等于-timezone.now()
+
+##### 测试新视图
+
+```python
+def create_question(question_text, days):
+    """
+    Create a question with the given `question_text` and published the
+    given number of `days` offset to now (negative for questions published
+    in the past, positive for questions that have yet to be published).
+    """
+    time = timezone.now() + datetime.timedelta(days=days)
+    return Question.objects.create(question_text=question_text, pub_date=time)
+
+
+class QuestionIndexViewTests(TestCase):
+    def test_no_questions(self):
+        """
+        If no questions exist, an appropriate message is displayed.
+        """
+        response = self.client.get(reverse('polls:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context['latest_question_list'], [])
+
+    def test_past_question(self):
+        """
+        Questions with a pub_date in the past are displayed on the
+        index page.
+        """
+        create_question(question_text="Past question.", days=-30)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['latest_question_list'],
+            ['<Question: Past question.>']
+        )
+
+    def test_future_question(self):
+        """
+        Questions with a pub_date in the future aren't displayed on
+        the index page.
+        """
+        create_question(question_text="Future question.", days=30)
+        response = self.client.get(reverse('polls:index'))
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context['latest_question_list'], [])
+
+    def test_future_question_and_past_question(self):
+        """
+        Even if both past and future questions exist, only past questions
+        are displayed.
+        """
+        create_question(question_text="Past question.", days=-30)
+        create_question(question_text="Future question.", days=30)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['latest_question_list'],
+            ['<Question: Past question.>']
+        )
+
+    def test_two_past_questions(self):
+        """
+        The questions index page may display multiple questions.
+        """
+        create_question(question_text="Past question 1.", days=-30)
+        create_question(question_text="Past question 2.", days=-5)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['latest_question_list'],
+            ['<Question: Past question 2.>', '<Question: Past question 1.>']
+        )
+```
+
+##### 测试DetailView
+有一个问题: 就算在发布日期时未来的哪些投票不会在目录页index里出现,但是如果用户知道或者猜到正确的URL,还是可以访问到它们.
+```python
+# polls/view.py
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+    def get_queryset(self):
+        """
+        Excludes any quesiton that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+```
+当然,我们将增加一些测试来检验pub_date在过去的Question可以显示出来,而pub_date在未来的不可以:
+```python
+class QuestionDetailViewTests(TestCase):
+    def test_future_question(self):
+        """
+        The detail view of a question with a pub_date in the future
+        returns a 404 not found.
+        """
+        future_question = create_question(question_text='Future question.', days=5)
+        url = reverse('polls:detail', args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_past_question(self):
+        """
+        The detail view of a question with a pub_date in the past
+        displays the question's text.
+        """
+        past_question = create_question(question_text='Past Question.', days=-5)
+        url = reverse('polls:detail', args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertContains(response, past_question.question_text)
+```
