@@ -646,7 +646,7 @@ class ResultsView(generic.DetailView):
 ## Part 5
 ### 自动化测试简介
 
-###开始第一个测试
+### 开始第一个测试
 ##### 首先需要有个bug
 在polls应用中有一个bug需要被修复: 我们的要求是如果Question是在一天之内发布的,Question.was_published_recently()方法将会返回True,然而现在这个方法在Question的pub_data字段比当前时间还晚时也会返回True.
 ```bash
@@ -917,4 +917,32 @@ class QuestionDetailViewTests(TestCase):
         url = reverse('polls:detail', args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+```
+
+## Part 6
+
+##### 自定义应用的界面和风格
+在polls目录下创建一个名为static的目录.Django将在该目录下查找静态文件,这种方式和Django在polls/templates/目录下查找templates的方式类似.
+Django的STATICFILES_FINDERS设置包含一系列的查找器,它们知道去哪里找到static文件AppDirectoriesFinder时默认查找器中的一个,它会在每个INSTALLED_APPS中指定的应用的子文件中寻找名称为static的特定文件夹,就像我们在polls中刚创建的那个.管理后台采用相同的目录结构管理它的静态文件.
+
+polls/static/polls/style.css
+```css
+li a {
+    color: green;
+}
+```
+下一步,在polls/templates/polls/index.html的文件头添加一下内容
+```html
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+```
+重新启动服务器,可以看到效果
+
+##### 添加一个背景图
+polls/static/polls/style.css
+```css
+body {
+    background: white url("images/background.gif") no-repeat;
+}
 ```
