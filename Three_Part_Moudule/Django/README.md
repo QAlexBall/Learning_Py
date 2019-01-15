@@ -937,7 +937,7 @@ li a {
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 ```
-重新启动服务器,可以看到效果
+**需要重新启动服务器,可以看到效果**
 
 ##### 添加一个背景图
 polls/static/polls/style.css
@@ -946,3 +946,5 @@ body {
     background: white url("images/background.gif") no-repeat;
 }
 ```
+
+## Part 7
