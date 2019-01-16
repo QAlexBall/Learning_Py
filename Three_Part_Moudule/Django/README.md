@@ -948,3 +948,19 @@ body {
 ```
 
 ## Part 7
+##### 自定义后台表单
+通过admin.site.register(Question)注册Question模型,Django能够构建一个默认的表单用于展示.通常来说,你期望能自定义表单的外观和工作方式.你也可以在注册模型时将这些设置告诉Django.
+用一下内容替换admin.site.register(Question):
+```python
+# polls/admin.py
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Data information', {'fields': ['pub_date']}),
+        (None,               {'fields': ['question_text']}),
+    ]
+admin.site.register(Question, QuestionAdmin)
+```
+fieldset元祖中的第一个元素是字段集的标题.可以看到表单发生了变化.
+
+##### 添加关联的对象
+
