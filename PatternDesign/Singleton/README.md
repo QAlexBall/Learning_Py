@@ -62,7 +62,6 @@ Instance already created: <__main__.Singleton object at 0x7fc6b7718550>
 
 ### Monostate单例模式
 ```python
-# borg.py
 class Borg:
     __shared_state = {"1":"2"}  # 双下划线表示类中私有变量
     def __init__(self):
