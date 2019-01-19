@@ -963,4 +963,99 @@ admin.site.register(Question, QuestionAdmin)
 fieldset元祖中的第一个元素是字段集的标题.可以看到表单发生了变化.
 
 ##### 添加关联的对象
+好了,现在我们有了投票的后台.不过,一个Question有多个Choice,但后台业却没有显示多个选项.
+有两个犯法可以解决这个问题.第一个就是仿照我们向后台注册Question一样注册Choice.这很简单.
+```python
+admin.site.register(Choice)
+```
+在这个表单中,"Question"字段是一个包含数据库中所有投票的选项框.Django知道要将ForeignKey在后台中以选择框的形式展示.因此,我们只有一个投票.
+```python
+# polls/admin.py
+class ChoiceInline(admin.StackedInline):
+    model = Choice
+    extra = 3
 
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Data information', {'fields': ['pub_date']}),
+        (None,               {'fields': ['question_text']}),
+    ]
+    inlines = [ChoiceInline]
+admin.site.register(Question, QuestionAdmin)
+```
+这回告诉Django:"Choice对象要在Queation后台页面编辑.默认提供3个足够的选项字段.
+不过,仍然有点小问题.它占据了大量的屏幕区域来显示所有关联的Choice对象的字段.对于这个问题,Django提供了一种表格式的单行显示关联对象的方法.
+```python
+class ChoiceInline(admin.TabularInline):
+```
+通过TabularInline代替(StackedInline),关联对象以一种表格式的方式展示,显得更加紧凑:
+
+##### 自定义后台更改列表
+现在投票的后台页看起来很多错,让我们对"更改列表"页面进行一些调整--改成一个能展示系统中所有投票的页面
+默认情况下,Django显示每个对象的str()返回的值.但有时如果我们能够显示单个字段,它会更有帮助.为此使用list_display后台选项,它是一个包含要显示的字段名的元组,在更改列表页中以列的形式展示这个对象,为了更好用,包含使用was_published_recently()方法:
+```python
+# polls/admin.py
+class QuestionAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('question_text', 'pub_date', 'was_published_recently')
+```
+```python
+# polls/models.py
+    def was_published_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
+        # return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    was_published_recently.admin_order_field = 'pub_date'
+    was_published_recently.boolean = True
+    was_published_recently.short_description = 'Published recently?'
+```
+再次编辑文件polls/admin.py,优化Question变更页:过滤器,使用list_filter.将一下代码添加至QuestionAdmin
+```python
+list_filter = ['pub_date']
+search_fields = ['question_text']
+```
+##### 自定义后台界面和风格
+在每个后台页顶部显示"Django管理员"显得很滑稽.这只是遗占位文本.
+不过,这可以通过Django的模板系统很方便的修改.Djagno的后台由自己驱动,且它的交互接口采用Django自己的模板系统
+##### 自定义你的工程的模板
+在工程目录(指包含manage.py的那个文件夹)内创建一个名为templates的目录.模板可放在系统中任何Django能找到的位置(谁启动了Django,Django就可以用他的身份运行.)不过,把模板放在工程内会带来很大的便利.
+打开设置文件(mysite/settings.py)在TEMPALES设置中添加DIR选项:
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+DIRS是一个包含多个体统目录的文件列表,用于载入Django模板时使用,是一个待搜索目录.
+现在,在templates目录内创建名为admin的目录,随后,将存放Django默认模板的目录(django/contrib/admin/templates)内的模板文件admin/base_site.html复制到这个目录内.
+接着,用站点名字替换文件内的``{{site_header|default:_('Django administration')}}``.完成后,你应该看到如下代码:
+```html
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Polls Administration</a></h1>
+{% endblock %}
+```
+我们会使用这个方法来教你复写模板.在一个实际工程中,你可能更期望使用django.contrib.admin.AdminSite.site_header来进行简单定制.
+这个模板文件包含很多类似{% block branding %}和{{ title }}的文本.{%和{{标签是Django模板语言的一部分.当Django渲染admin/base_site.html时,这个模板语言会被求值,生成最终的网页.
+注意,所有的Django默认后台模板均可被复写.若要复写模板,像你修改base_site.html一样修改其他文件--先将其默认目录中拷贝到你的自定义目录,再做修改.
+
+##### 自定义应用的模板
+DIRS 默认是空的，Django 是怎么找到默认的后台模板的？因为 APP_DIRS 被置为 True，Django 会自动在每个应用包内递归查找 templates/ 子目录（不要忘了 django.contrib.admin 也是一个应用）。
+我们的投票应用不是非常复杂，所以无需自定义后台模板。不过，如果它变的更加复杂，需要修改 Django 的标准后台模板功能时，修改 应用 的模板会比 工程 的更加明智。这样，在其它工程包含这个投票应用时，可以确保它总是能找到需要的自定义模板文件。
+
+##### 自定义后台主页
+在类似的说明中，你可能想要自定义 Django 后台索引页的外观。
+
+默认情况下，它展示了所有配置在 INSTALLED_APPS 中，已通过后台应用注册，按拼音排序的应用。你可能想对这个页面的布局做重大的修改。毕竟，索引页是后台的重要页面，它应该便于使用。
+
+需要自定义的模板是 admin/index.html。（像上一节修改 admin/base_site.html 那样修改此文件——从默认目录中拷贝此文件至自定义模板目录）。打开此文件，你将看到它使用了一个叫做 app_list 的模板变量。这个变量包含了每个安装的 Django 应用。你可以用任何你期望的硬编码链接（链接至特定对象的管理页）替代使用这个变量。
