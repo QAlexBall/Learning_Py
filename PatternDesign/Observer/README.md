@@ -11,7 +11,7 @@
 
 ### 理解观察者设计模式
 
-在观察者模式中,对象(Subject)维护了一个依赖(Observer)列表,以便Subject可以使用Observer定义的任何方法通知所有观察者它所发生的变化.
+在观察者模式中,**对象(Subject)维护了一个依赖[(Observer)列表]**,以便Subject可以使用Observer定义的任何方法通知所有观察者它所发生的变化.
 
 观察者模式的主要目标如下:
 * 它定义了对象之间的一对多的依赖关系,从而使得一个对象中的任何改动都将自动通知给其他依赖对象.
@@ -22,3 +22,9 @@
 * 用作新闻机构的框架;
 * 股票市场也是观察者模式的一个大型场景;
 
+### 观察者模式的UML类图
+
+![Observer](uml.png)
+* Subject: 类Subject需要了解Observer.Subject类具有许多方法,诸如register()和deregister()等,Observer可以通过这些方法注册到Subject类中.因此,一个Subject可以处理多个Observer.
+* Observer: 它为关注主题的对象定义了一个接口.它定义了Observer需要实现的各个方法,以便主题发生变化时能够获得相应的通知.
+* ConcreteObserver: 它用来保存应该与Subject的状态保持一致的状态.它实现了Observer接口以保持其状态与主题中的变化一致.
