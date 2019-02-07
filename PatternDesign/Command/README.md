@@ -27,3 +27,13 @@
 * 创建一个结构来根据较小操作完成高级操作.
 
 ### 命令模式的UML类图
+![command](uml.png)
+
+* Command: 声明执行操作的接口
+* ConcreteCommand: 将一个Receiver对象和一个操作绑定在一起
+* Client: 创建ConcreteCommand对象并设定其接收者
+* Invoker: 要求该ConcreteCommand执行这个请求
+* Receiver: 知道如何实施与执行一个请求相关的操作
+
+整个流程图是非常简单的,客户端请求执行命令,调用者接受命令,封装它并将其放置到队列中.ConcreteCommand类根据所请求的命令来知道接收者执行特定的动作.
+
