@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6cba657d-94e0-4e6d-b171-e2776fc3378e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../db_demo1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../db_demo1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-    </list>
+    <list default="true" id="6cba657d-94e0-4e6d-b171-e2776fc3378e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,12 +176,12 @@
       <option name="presentableId" value="Default" />
       <updated>1549802667918</updated>
       <workItem from="1549802669321" duration="2094000" />
-      <workItem from="1549805247912" duration="3419000" />
+      <workItem from="1549805247912" duration="3545000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5513000" />
+    <option name="totallyTimeSpent" value="5639000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -200,7 +194,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="960" y="20" width="960" height="1060" extended-state="4" />
-    <editor active="true" />
     <layout>
       <window_info active="true" anchor="top" x="995" y="130" width="916" height="289" id="Terminal" order="0" sideWeight="0.46710527" side_tool="true" visible="true" weight="0.16122004" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984127" visible="true" weight="0.16008772" />
@@ -218,7 +211,7 @@
       <window_info anchor="bottom" id="Database Changes" order="8" weight="0.32873806" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.495228" weight="0.25556734" />
-      <window_info anchor="bottom" id="Run" order="11" sideWeight="0.53289473" visible="true" weight="0.2908497" />
+      <window_info anchor="bottom" id="Run" order="11" sideWeight="0.53289473" weight="0.2908497" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
