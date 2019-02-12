@@ -1,9 +1,12 @@
 from flask import Flask, session
 import os
+from datetime import timedelta
 
 app = Flask(__name__)
 # 24个字符的字符串
 app.config['SECRET_KEY'] = os.urandom(24)
+# 设置permanent为True的默认时间为7天
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
 # 添加数据到session中
 # 操作session的时候,跟操作字典是一样的.
@@ -12,6 +15,9 @@ app.config['SECRET_KEY'] = os.urandom(24)
 @app.route('/')
 def hello_world():
     session['username'] = 'admin'
+    # 默认过期时间为浏览器关闭之后
+    # permanent设置为True后过期时间为31天
+    session.permanent = True
     return 'Hello World!'
 
 @app.route('/get/')
