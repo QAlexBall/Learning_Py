@@ -13,7 +13,7 @@ def hello_world():
     # article1 = Article(title='aaa', content='bbb')
     # db.session.add(article1)
     # db.session.commit()
-    return 'Hello World!'
+    return render_template('index.html')
 
 @app.route('/login/', methods=('GET', 'POST'))
 def login():
@@ -33,8 +33,7 @@ def login():
 def edit():
     if hasattr(g, 'username'):
         print('article_id is: ', g.article_id)
-        return 'edit success'
-
+        return render_template('edit.html')
     else:
         return redirect(url_for('login'))
 
@@ -49,6 +48,13 @@ def my_before_request():
         g.username = session.get('username')
     article_id = Article.query.filter(Article.title == 'aaa').first()
     g.article_id = article_id
+
+# 上下文处理器应该返回一个字典.字典中的`key`会在模板中被当成变量来渲染.
+# 上下文处理器返回的字典,在所有页面都是可用的.
+
+@app.context_processor
+def my_context_processor():
+        return {'username': 'admin'}
 
 if __name__ == '__main__':
     app.run(debug=True)
