@@ -1,6 +1,6 @@
 # g对象是专门用来保存用户数据的.
 # g对象在当前请求中全局存在
-from flask import Flask, g, render_template,request
+from flask import Flask, g, render_template, request
 from utils import login_log
 
 app = Flask(__name__)
@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-
     return 'index'
 
 @app.route('/login/', methods=['GET', 'POST'])

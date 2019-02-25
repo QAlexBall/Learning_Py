@@ -45,9 +45,9 @@ async def parse(url):
 def main():
     loop = asyncio.get_event_loop()    
     start = time()    
-    # for i in range(5):
-    loop.run_until_complete(parse(url))
-    # end = time()
+    for i in range(5):
+        loop.run_until_complete(parse(url))
+    end = time()
     print ('Cost {} seconds'.format((end - start) / 5))
     loop.close()
 
