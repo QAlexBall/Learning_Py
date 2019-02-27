@@ -29,7 +29,3 @@ result = l.next
 
 Solution.static_swap_paris(l)
 output(result)
-
-
-
-ceh
