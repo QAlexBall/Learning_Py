@@ -1,0 +1,21 @@
+{% extends 'jianshu/base.html' %}
+{% block title %}Index{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block main %}
+{% load static %}
+{#<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">#}
+
+{% if latest_article_list %}
+    <ul>
+    {% for article in latest_article_list %}
+        <li><a href="/jianshu/{{ article.article_id }}/"> <h3>{{ article.article_title }}</h3> </a>
+        <a href="">Post Comment</a></li>
+{#        <li><a href="{% url 'jianshu:detail' article.article_id %}">{{ article.article_title }}</a></li>#}
+        {% endfor %}
+    </ul>
+{% else %}
+    <p> No articles are available. </p>
+{% endif %}
+{% endblock %}
