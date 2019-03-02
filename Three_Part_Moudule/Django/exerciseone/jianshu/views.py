@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 # Create your views here.
 
+
 class IndexView(generic.ListView):
     template_name = 'jianshu/index.html'
     context_object_name = 'latest_article_list'
@@ -71,17 +72,19 @@ def login(request):
         password = request.POST['password']
         user = User.objects.filter(user_name=username, user_password=password).first()
         if user:
-            login_user = User.objects.get(user_name=username, user_password=password)
-            print(user.user_name, login_user)
+            # login_user = User.objects.get(user_name=username, user_password=password)
+            # print(user.user_name, login_user)
             response = redirect("index")
             response.set_cookie("user_name", user.user_name, 604800)
             return response
         else:
-            return 'error password or username'
+            return render(request, 'jianshu/login.html', {'error' : 'username or password error!'})
 
 def logout(request):
-    response = redirect("login")
+    response = redirect('login')
+    print(request.user_name)
     response.delete_cookie("user_name")
+    print(request.user_name)
     return response
 
 @csrf_exempt
@@ -106,4 +109,4 @@ def register(request):
                                 user_password=password2)
                 return redirect("login")
         else:
-            return 'tel exist.'
+            return render(request, 'jianshu/register.html', {'error': 'register again!'})
