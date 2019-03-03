@@ -5,7 +5,13 @@
 
 {% block main %}
     <ul>
-        <h3 class="center">{{ article_title }}</h3>
+        <h3 class="center">{{ article_title }}</h3><h5>作者: {{ user_name }}</h5>
+         {% if album_img %}
+             <p>{{ album_img }}</p>
+             <img src="../media/upload/2.jpg" alt="">
+         {% endif %}
         <p>{{ article_context }}</p>
+        <a href="/jianshu/write_comment/{{ article_id }}/">Post Comment</a></li>
+
     </ul>
 {% endblock %}

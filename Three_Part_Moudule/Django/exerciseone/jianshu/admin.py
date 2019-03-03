@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Article, Comment, User
+from .models import Article, Comment, User, Album
 class CommentInline(admin.TabularInline):
     model = Comment
     extra = 5
@@ -19,4 +19,15 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ['title']
 
 admin.site.register(Article, ArticleAdmin)
-admin.site.register(User)
+
+class AlbumInline(admin.TabularInline):
+    model = Album
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'user_name')
+    fieldsets = [
+        ('username', {'fields': ['user_name']}),
+    ]
+    inlines = [AlbumInline]
+
+admin.site.register(User, UserAdmin)

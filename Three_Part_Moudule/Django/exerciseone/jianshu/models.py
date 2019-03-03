@@ -33,3 +33,9 @@ class User(models.Model):
     user_tel = models.CharField('user telephone', max_length=11, unique=True)
     user_password = models.CharField('user password', max_length=100)
 
+class Album(models.Model):
+
+    album_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    album_article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    album_img = models.ImageField(upload_to='upload')
+

@@ -11,5 +11,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('register/', views.register, name='register'),
     path('write_comment/<int:article_id>/', views.write_comment, name='write_comment'),
+    # path('<int:article_id>/', views.ArticleAndCommentView.as_view(), name='article_content')
     path('<int:article_id>/', views.article_content, name='article_content'),
 ]
