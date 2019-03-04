@@ -31,3 +31,5 @@ class UserAdmin(admin.ModelAdmin):
     inlines = [AlbumInline]
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Comment)
+admin.site.register(Album)

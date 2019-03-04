@@ -84,7 +84,7 @@ DATABASES = {
     }
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'jianshu/media').replace('\\', '/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'jianshu/static/media').replace('\\', '/')
 MEDIA_URL = '/upload/'
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
