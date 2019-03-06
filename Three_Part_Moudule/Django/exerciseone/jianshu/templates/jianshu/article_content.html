@@ -18,8 +18,7 @@
                 <a href="/jianshu/{{ article_id }}/delete/"><button class="btn">delete</button></a>
             </p>
         {% endif %}
-        <h4 class="">评论
-        </h4>
+        <h4 class="">最新评论</h4>
         <ul class="">
             {% for comment in comments %}
                 <li>
@@ -32,10 +31,11 @@
     <form action="", method="POST">
         <div class="form-container">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="comment" name="comment">
+                <input id="comment_id" type="text" class="form-control" placeholder="comment" name="comment">
             </div>
             <div class="form-group">
-                <button class="btn btn-primary">提交评论</button>
+                <button id="button_id" class="btn btn-primary">提交评论</button>
+                <button class="btn"><a href="/jianshu/{{ article_id }}/comment/">全部评论</a></button>
             </div>
         </div>
     </form>

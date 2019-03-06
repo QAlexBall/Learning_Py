@@ -16,29 +16,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/jianshu/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="107" column="53" selection-start-line="107" selection-start-column="53" selection-end-line="107" selection-end-column="53" />
+            <state relative-caret-position="48">
+              <caret line="78" column="39" selection-start-line="78" selection-start-column="39" selection-end-line="78" selection-end-column="39" />
               <folding>
                 <element signature="e#0#62#0" expanded="true" />
-                <element signature="e#596#1113#0" />
-                <element signature="e#595#1881#0" />
-                <element signature="e#3868#4399#0" />
-                <element signature="e#4466#4935#0" />
-                <element signature="e#3467#4001#0" />
-                <element signature="e#4028#4116#0" />
-                <element signature="e#4158#5060#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jianshu/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#333#670#0" />
+                <element signature="e#717#2003#0" />
               </folding>
             </state>
           </provider>
@@ -47,47 +30,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/article_content.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="37" column="60" selection-start-line="37" selection-start-column="60" selection-end-line="37" selection-end-column="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/write.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="16" column="67" lean-forward="true" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/delete_article.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" column="31" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/jianshu/admin.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="588">
-              <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="414">
+              <caret line="23" column="38" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -95,11 +39,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/jianshu/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+            <state relative-caret-position="252">
+              <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
               <folding>
                 <element signature="e#1#29#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/write_comment.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="576">
+              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -117,7 +70,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/exerciseone/urls.py" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/detail.html" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/register.html" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/login.html" />
@@ -126,24 +78,33 @@
         <option value="$PROJECT_DIR$/jianshu/utils/UserAuthMiddleware.py" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/base.html" />
         <option value="$PROJECT_DIR$/jianshu/models.py" />
-        <option value="$PROJECT_DIR$/exerciseone/settings.py" />
         <option value="$PROJECT_DIR$/jianshu/static/jianshu/css/base.css" />
-        <option value="$PROJECT_DIR$/jianshu/templates/jianshu/write_comment.html" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/write.html" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/edit.html" />
-        <option value="$PROJECT_DIR$/jianshu/templates/jianshu/article_content.html" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/delete_article.html" />
         <option value="$PROJECT_DIR$/jianshu/admin.py" />
-        <option value="$PROJECT_DIR$/jianshu/urls.py" />
         <option value="$PROJECT_DIR$/jianshu/templates/jianshu/index.html" />
+        <option value="$PROJECT_DIR$/jianshu/templates/jianshu/test].html" />
+        <option value="$PROJECT_DIR$/exerciseone/settings.py" />
+        <option value="$PROJECT_DIR$/exerciseone/urls.py" />
+        <option value="$PROJECT_DIR$/AjaxTest/ajax/test1.txt" />
+        <option value="$PROJECT_DIR$/AjaxTest/views.py" />
+        <option value="$PROJECT_DIR$/AjaxTest/static/media/upload/test1.txt" />
+        <option value="$PROJECT_DIR$/AjaxTest/static/ajax/test1.txt" />
+        <option value="$PROJECT_DIR$/AjaxTest/templates/AjaxTest/test2.html" />
+        <option value="$PROJECT_DIR$/AjaxTest/templates/AjaxTest/test1.html" />
+        <option value="$PROJECT_DIR$/AjaxTest/urls.py" />
+        <option value="$PROJECT_DIR$/jianshu/urls.py" />
+        <option value="$PROJECT_DIR$/jianshu/templates/jianshu/write_comment.html" />
+        <option value="$PROJECT_DIR$/jianshu/templates/jianshu/article_content.html" />
         <option value="$PROJECT_DIR$/jianshu/views.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="849" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="960" />
     <option name="y" value="20" />
-    <option name="width" value="1071" />
+    <option name="width" value="960" />
     <option name="height" value="1060" />
   </component>
   <component name="ProjectView">
@@ -151,6 +112,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -161,7 +123,7 @@
             <path>
               <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
               <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
+              <item name="AjaxTest" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
@@ -172,64 +134,24 @@
               <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
               <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
               <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
               <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
               <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="jianshu" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
               <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="media" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="media" type="462c0819:PsiDirectoryNode" />
               <item name="upload" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="exerciseone" type="b2602c69:ProjectViewProjectNode" />
-              <item name="exerciseone" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="jianshu" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -237,21 +159,22 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/jianshu/static/media/upload" />
-      <recent name="$PROJECT_DIR$/jianshu" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/media/2" />
-      <recent name="$PROJECT_DIR$/media/upload/2" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/AjaxTest" />
       <recent name="$PROJECT_DIR$/jianshu/static/jianshu/css" />
       <recent name="$PROJECT_DIR$/jianshu" />
       <recent name="$PROJECT_DIR$/jianshu/templates" />
       <recent name="$PROJECT_DIR$/jianshu/templates/jianshu" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/AjaxTest/static" />
+      <recent name="$PROJECT_DIR$/jianshu/static/media/upload" />
+      <recent name="$PROJECT_DIR$/jianshu" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/media/2" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -307,12 +230,16 @@
       <workItem from="1551525604296" duration="6505000" />
       <workItem from="1551579174187" duration="21688000" />
       <workItem from="1551615951240" duration="694000" />
-      <workItem from="1551694248166" duration="13833000" />
+      <workItem from="1551694248166" duration="14605000" />
+      <workItem from="1551709081621" duration="2116000" />
+      <workItem from="1551757009089" duration="4678000" />
+      <workItem from="1551802247101" duration="3105000" />
+      <workItem from="1551845847723" duration="5376000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67259000" />
+    <option name="totallyTimeSpent" value="83306000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -324,10 +251,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="849" y="20" width="1071" height="1060" extended-state="4" />
+    <frame x="960" y="20" width="960" height="1060" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.21212122" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.25219297" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -350,7 +277,7 @@
       <window_info anchor="right" id="Database" order="4" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.21212122" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.30372807" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -377,32 +304,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/exerciseone/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="e#635#667#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/templates/static/jianshu/css/base.css" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/django/urls/base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="85" selection-start-line="85" selection-end-line="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/static/jianshu/css/index.css" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="1682" column="8" selection-start-line="1682" selection-start-column="8" selection-end-line="1682" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/django/db/models/query.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="327">
@@ -456,9 +357,6 @@
     <entry file="file://$PROJECT_DIR$/upload/wallhaven-715909.jpg" />
     <entry file="file://$PROJECT_DIR$/upload/Steam_002_Vr4vdqP.png" />
     <entry file="file://$PROJECT_DIR$/upload/Steam_002.png" />
-    <entry file="file://$PROJECT_DIR$/jianshu/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/tests.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -471,13 +369,6 @@
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/media/upload/default_background.jpg" />
-    <entry file="file://$PROJECT_DIR$/exerciseone/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="86" column="57" selection-start-line="86" selection-start-column="57" selection-end-line="86" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/static/jianshu/css/login_register.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -492,27 +383,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/write_comment.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/login.html">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="33" column="65" selection-start-line="33" selection-start-column="65" selection-end-line="33" selection-end-column="65" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/edit.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/static/media/upload/default_background.jpg" />
+    <entry file="file://$PROJECT_DIR$/jianshu/static/media/upload/Screenshot_at_2018-08-15_22-10-02.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/static/media/upload/Selection_004.png" />
+    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -523,35 +412,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/static/media/upload/default_background.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/static/media/upload/Screenshot_at_2018-08-15_22-10-02.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/static/media/upload/Selection_004.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/write.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
-          <caret line="16" column="67" lean-forward="true" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
+          <caret line="16" column="67" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
+        <state relative-caret-position="378">
           <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
@@ -559,43 +429,134 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/urls.py">
+    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/test.html" />
+    <entry file="file://$PROJECT_DIR$/exerciseone/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+        <state relative-caret-position="414">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#635#667#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AjaxTest/tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="556">
+          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/exerciseone/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="39" column="30" lean-forward="true" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="33" column="65" selection-start-line="33" selection-start-column="65" selection-end-line="33" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AjaxTest/static/media/upload/test1.txt" />
+    <entry file="file://$PROJECT_DIR$/AjaxTest/admin.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AjaxTest/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
           <folding>
             <element signature="e#1#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/index.html">
+    <entry file="file://$PROJECT_DIR$/AjaxTest/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+        <state relative-caret-position="90">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AjaxTest/static/ajax/test1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="35" selection-start-column="35" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AjaxTest/templates/AjaxTest/test2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="16" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AjaxTest/templates/AjaxTest/test1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="66" lean-forward="true" selection-start-line="22" selection-start-column="66" selection-end-line="22" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
+          <folding>
+            <element signature="e#1#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/spyder/utils/help/js/jquery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/write_comment.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/templates/jianshu/article_content.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="37" column="60" selection-start-line="37" selection-start-column="60" selection-end-line="37" selection-end-column="60" />
+        <state relative-caret-position="414">
+          <caret line="23" column="38" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jianshu/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="107" column="53" selection-start-line="107" selection-start-column="53" selection-end-line="107" selection-end-column="53" />
+        <state relative-caret-position="48">
+          <caret line="78" column="39" selection-start-line="78" selection-start-column="39" selection-end-line="78" selection-end-column="39" />
           <folding>
             <element signature="e#0#62#0" expanded="true" />
-            <element signature="e#596#1113#0" />
-            <element signature="e#595#1881#0" />
-            <element signature="e#3868#4399#0" />
-            <element signature="e#4466#4935#0" />
-            <element signature="e#3467#4001#0" />
-            <element signature="e#4028#4116#0" />
-            <element signature="e#4158#5060#0" />
+            <element signature="e#333#670#0" />
+            <element signature="e#717#2003#0" />
           </folding>
         </state>
       </provider>

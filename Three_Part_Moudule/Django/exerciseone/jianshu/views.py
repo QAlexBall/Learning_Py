@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_list_or_404
 from django.views.decorators.csrf import csrf_exempt
-from django.views import generic
 from .models import Article, User, Comment, Album
 from django.template import loader
 from django.http import HttpResponse
@@ -60,7 +59,7 @@ def article_content(request, article_id):
     templates = loader.get_template('jianshu/article_content.html')
     article = Article.objects.filter(article_id=article_id).first()
     album = Album.objects.filter(album_article=article).first()
-    comments = Comment.objects.order_by('comment_create_time')
+    comments = Comment.objects.order_by('-comment_create_time', )
 
     # 获取该文章的评论
     article_comments = []
@@ -77,7 +76,7 @@ def article_content(request, article_id):
         'article_created_time': article.article_created_time,
         'album_img': album.album_img,
         'user_name': album.album_user.user_name,
-        'comments': article_comments,
+        'comments': article_comments[:5],
         'comment_created_time': timezone.now(),
         'edit_and_delete': False,
     }
@@ -105,9 +104,38 @@ def article_content(request, article_id):
                 article_comments.append(comment)
             else:
                 pass
-        info['comments'] = article_comments
+        info['comments'] = article_comments[:5]
         return render(request, 'jianshu/article_content.html', info)
     return HttpResponse(templates.render(info, request))
+
+@csrf_exempt
+def write_comment(request, article_id):
+    comments = Comment.objects.order_by('comment_create_time')
+    article_comments = []
+    for comment in comments:
+        if comment.article.article_id == article_id:
+            article_comments.append(comment)
+        else:
+            pass
+    info = {
+        'article_id': article_id,
+        'comments' : article_comments,
+    }
+    # POST
+    if request.method == 'POST':
+        print('POST')
+        comments = request.POST.get('article_comments')
+        if comments != "":
+            comment = Comment()
+            comment.article_id = article_id
+            comment.comment_context = comments
+            comment.comment_create_time = timezone.now()
+            comment.save()
+            return HttpResponse('{"status":"success", "msg":"添加成功"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail", "msg":"添加失败"}', content_type='application/json')
+    return render(request, 'jianshu/write_comment.html', info)
+
 
 @csrf_exempt
 def edit_article(request, article_id):

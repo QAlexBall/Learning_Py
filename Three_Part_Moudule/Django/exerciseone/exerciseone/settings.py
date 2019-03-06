@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'AjaxTest.apps.AjaxtestConfig',
     'jianshu.apps.JianshuConfig',
     'django.contrib.admin',
     'django.contrib.auth',
