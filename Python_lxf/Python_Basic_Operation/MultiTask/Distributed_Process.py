@@ -15,12 +15,10 @@
 # 服务进程负责启动Queue,把Queue注册到网络上, 然后往Queue里面写任务
 import random, time, queue
 from multiprocessing.managers import BaseManager
-
 # 发送任务的队列
 task_queue = queue.Queue()
 # 接受任务的队列
 result_queue = queue.Queue()
-
 # 从BaseManager继承QueueManager
 class QueueManager(BaseManager):
 	pass
@@ -37,14 +35,14 @@ task = manager.get_task_queue()
 result = manager.get_result_queue()
 # 放几个任务进去:
 for i in range(10):
-	n = random.randint(0, 10000)
-	print('Put task %d...' % n)
-	task.put(n)
+    n = random.randint(0, 10000)
+    print('Put task %d...' % n)
+    task.put(n)
 # 从result队列读取结果:
 print('Try get reuslt...')
 for i in range(10):
-	r = result.get(timeout=10)
-	print('Result: %s' % r)
+    r = result.get(timeout=10)
+    print('Result: %s' % r)
 # 关闭:
 manager.shutdown()
 print('master exit')
