@@ -151,3 +151,10 @@ print(product)
 
 ***
 
+
+***
+可以使用TemporaryFile保存临时文件，could avoid hard code for path
+tempfile 
+TemporaryFile() 
+NamedTemporaryFile() 
+***
