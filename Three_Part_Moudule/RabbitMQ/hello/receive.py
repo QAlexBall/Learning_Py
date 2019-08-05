@@ -1,9 +1,17 @@
 import pika 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+credentials = pika.PlainCredentials('chris', 'chris')
+
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(
+        '192.168.13.32', 
+        5672, 
+        '/', 
+        credentials)
+)
 channel = connection.channel()
 
-channel.queue_declare(queue='test')
+channel.queue_declare(queue='test', durable=True)
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)
