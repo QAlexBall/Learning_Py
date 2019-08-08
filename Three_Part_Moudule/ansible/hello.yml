@@ -1,0 +1,5 @@
+---
+- hosts: freddy, chriszhu
+  tasks: 
+    - name: "hello world!"
+      shell: echo "Hello World" `date` by `hostname` > /tmp/hello.log
