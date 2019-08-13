@@ -30,10 +30,12 @@ def operate_csv_v2():
                     replaced_text_splited.remove(replaced_text_splited[1])
                 file_output.write(str(replaced_text_splited))
 
+import os
 def operate_csv_v3():
-
+    print (os.getcwd())
+    print (os.path.abspath(os.path.dirname(__file__)))
     replaced_text = ""
-    with open("test.csv") as file_input:
+    with open("./test.csv") as file_input:
         replaced_text = file_input.read().replace('abc', 'kkk')
 
     split_text_list = list(csv.reader(replaced_text.splitlines()))
