@@ -22,8 +22,7 @@ class MapReduce(object):
     def __call__(self, inputs, chunksize=1):
         # inputs 是一个需要处理的列表，chunksize表示每次给mapper的量，根据需求调整这个值
         # 第一次pool.map是为了把大任务分组
-        map_responses = self.pool.map(
-            self.map_func, inputs, chunksize=chunksize)
+        map_responses = self.pool.map(self.map_func, inputs, chunksize=chunksize)
         # chain把mapper的结果链接为一个可迭代的对象
         partitioned_data = self.partition(itertools.chain(*map_responses))
         # 第二次pool.map是为了聚合结果实现reduce，map方法继续用来实现并行计算
