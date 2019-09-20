@@ -1,10 +1,5 @@
 venv/
-__pycache
-.idea
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/__pycache__/__init__.cpython-37.pyc
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/__pycache__/items.cpython-37.pyc
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/__pycache__/settings.cpython-37.pyc
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/spiders/__pycache__/__init__.cpython-37.pyc
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/spiders/__pycache__/author_spider.cpython-37.pyc
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/spiders/__pycache__/baidu_spider.cpython-37.pyc
-Three_Part_Moudule/scrapyTutorial/scrapyTutorial/spiders/__pycache__/quotes_spider.cpython-37.pyc
+.vscode/
+.idea/
+__pycache__/
+
