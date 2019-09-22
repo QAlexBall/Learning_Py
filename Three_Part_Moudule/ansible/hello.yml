@@ -1,3 +1,4 @@
+# ansible simple example
 ---
 - hosts: freddy, chriszhu
   tasks: 
