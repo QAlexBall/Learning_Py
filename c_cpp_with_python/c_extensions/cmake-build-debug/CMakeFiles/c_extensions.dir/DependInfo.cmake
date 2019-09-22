@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/main.c" "/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/cmake-build-debug/CMakeFiles/c_extensions.dir/main.c.o"
   "/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/src/sample.c" "/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/cmake-build-debug/CMakeFiles/c_extensions.dir/src/sample.c.o"
+  "/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/src/spammoudle.c" "/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/cmake-build-debug/CMakeFiles/c_extensions.dir/src/spammoudle.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

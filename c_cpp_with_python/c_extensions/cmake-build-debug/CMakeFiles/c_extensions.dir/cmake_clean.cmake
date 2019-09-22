@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/c_extensions.dir/main.c.o"
   "CMakeFiles/c_extensions.dir/src/sample.c.o"
+  "CMakeFiles/c_extensions.dir/src/spammoudle.c.o"
   "c_extensions.pdb"
   "c_extensions"
 )

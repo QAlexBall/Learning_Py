@@ -6,6 +6,6 @@ find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 
 
-add_executable(c_extensions main.c src/headers/sample.h src/sample.c)
+add_executable(c_extensions main.c src/headers/sample.h src/sample.c src/spammoudle.c)
 target_include_directories(c_extensions PRIVATE ${PYTHON_INCLUDE_DIRS})
 target_link_libraries(c_extensions PRIVATE ${PYTHON_LIBRARIES})

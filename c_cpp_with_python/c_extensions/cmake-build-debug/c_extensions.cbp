@@ -89,6 +89,9 @@
 		<Unit filename="/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/src/sample.c">
 			<Option target="c_extensions"/>
 		</Unit>
+		<Unit filename="/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/src/spammoudle.c">
+			<Option target="c_extensions"/>
+		</Unit>
 		<Unit filename="/Users/derenzhu/Github/my_github/Python_Module/c_cpp_with_python/c_extensions/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

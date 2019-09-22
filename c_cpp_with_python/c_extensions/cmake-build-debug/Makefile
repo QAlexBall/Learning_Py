@@ -177,6 +177,33 @@ src/sample.c.s:
 	$(MAKE) -f CMakeFiles/c_extensions.dir/build.make CMakeFiles/c_extensions.dir/src/sample.c.s
 .PHONY : src/sample.c.s
 
+src/spammoudle.o: src/spammoudle.c.o
+
+.PHONY : src/spammoudle.o
+
+# target to build an object file
+src/spammoudle.c.o:
+	$(MAKE) -f CMakeFiles/c_extensions.dir/build.make CMakeFiles/c_extensions.dir/src/spammoudle.c.o
+.PHONY : src/spammoudle.c.o
+
+src/spammoudle.i: src/spammoudle.c.i
+
+.PHONY : src/spammoudle.i
+
+# target to preprocess a source file
+src/spammoudle.c.i:
+	$(MAKE) -f CMakeFiles/c_extensions.dir/build.make CMakeFiles/c_extensions.dir/src/spammoudle.c.i
+.PHONY : src/spammoudle.c.i
+
+src/spammoudle.s: src/spammoudle.c.s
+
+.PHONY : src/spammoudle.s
+
+# target to generate assembly for a file
+src/spammoudle.c.s:
+	$(MAKE) -f CMakeFiles/c_extensions.dir/build.make CMakeFiles/c_extensions.dir/src/spammoudle.c.s
+.PHONY : src/spammoudle.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... src/sample.o"
 	@echo "... src/sample.i"
 	@echo "... src/sample.s"
+	@echo "... src/spammoudle.o"
+	@echo "... src/spammoudle.i"
+	@echo "... src/spammoudle.s"
 .PHONY : help
 
 
