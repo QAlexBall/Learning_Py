@@ -5,6 +5,13 @@
 #include <Python.h>
 #include "headers/sample.h"
 
+static int test = 10;
+int test1 = 10;
+
+void print_test() {
+    printf("static test: %d\n", test);
+    printf("test1: %d\n", test1);
+}
 
 /* int gcd(int, int) */
 static PyObject* py_gcd(PyObject* self, PyObject* args) {
