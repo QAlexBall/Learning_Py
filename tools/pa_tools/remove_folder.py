@@ -19,6 +19,7 @@ log.basicConfig(level=log.INFO)
 def remove_match_folder(user, parent_folder, folder_name):
     """
     remove folder by provided name under the parent_folder
+    TODO: add to delete files like [*.xml, *.py, hello* ...]
     """
     if user:
         log.info("hello, {}".format(user))
