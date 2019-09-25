@@ -6,10 +6,6 @@ find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 
 
-<<<<<<< Updated upstream
-add_executable(c_extensions main.c)
-=======
 add_executable(c_extensions  src/headers/sample.h src/sample.c main.c)
->>>>>>> Stashed changes
 target_include_directories(c_extensions PRIVATE ${PYTHON_INCLUDE_DIRS})
 target_link_libraries(c_extensions PRIVATE ${PYTHON_LIBRARIES})
