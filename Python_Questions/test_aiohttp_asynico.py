@@ -2,7 +2,7 @@
 #     print('args = ', args)
 #     print('kwargs = ', kwargs)
 #     print('-----------------')
- 
+
 # foo(1, 2, 3, 4)
 # foo(a=1, b=2, c=3)
 # foo(1, 2, 3, 4, a=1, b=2, c=3)
@@ -11,14 +11,17 @@
 import aiohttp
 import asyncio
 
+
 async def fetch(session, url):
     async with session.get(url) as response:
         return await response.text()
+
 
 async def main():
     async with aiohttp.ClientSession() as session:
         html = await fetch(session, 'http://python.org')
         print(html)
+
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
@@ -27,10 +30,12 @@ if __name__ == '__main__':
 # Server
 from aiohttp import web
 
+
 async def handle(request):
     name = request.match_info.get('name', "Anonymous")
     text = "Hello, " + name
     return web.Response(text=text)
+
 
 async def wshandle(request):
     ws = web.WebSocketResponse()
