@@ -7,7 +7,7 @@ adder = CDLL('./adder.so')
 res_int = adder.add_int(3, 5)
 print("Sum of 3 and 5 = ", str(res_int))
 
-#Find sum of float
+# Find sum of float
 a = c_float(5.5)
 b = c_float(3.1)
 

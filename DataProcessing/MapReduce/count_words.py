@@ -1,14 +1,12 @@
 import multiprocessing
 import string
+from .map_reduce import MapReduce
 
-from map_reduce import MapReduce
 
 def file_to_words(filename):
-    """ READ a file and return a swquence of (words, occurances) values. """
-    STOP_WORDS = set([
-        'a', 'an', 'and', 'are', 'as', 'be', 'by', 'for', 'if', 'in', 
-        'is', 'it', 'of', 'or', 'py', 'rst', 'that', 'the', 'to', 'with',
-    ])
+    """ READ a file and return a sequence of (words, occupancies) values. """
+    STOP_WORDS = {'a', 'an', 'and', 'are', 'as', 'be', 'by', 'for', 'if', 'in', 'is', 'it', 'of', 'or', 'py', 'rst',
+                  'that', 'the', 'to', 'with'}
     TR = string.maketrans(string.punctuation, ' ' * len(string.punctuation))
     print(multiprocessing.current_process().name, 'reading', filename)
     output = []
@@ -24,10 +22,12 @@ def file_to_words(filename):
                     output.append((word, 1))
         return output
 
+
 def count_words(item):
     """ Convert the partitioned data for a word to a tuple containing the word and the number of occurances. """
     word, occurances = item
-    return (word, sum(occurances))
+    return word, sum(occurances)
+
 
 if __name__ == '__main__':
     import operator
