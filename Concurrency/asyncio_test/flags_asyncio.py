@@ -4,6 +4,7 @@ import aiohttp
 
 from flags import BASE_URL, save_flag, show, main
 
+
 @asyncio.coroutine
 def get_flag(cc):
     url = '{}/{cc}/{cc}.gif'.format(BASE_URL, cc=cc.lower())
@@ -11,12 +12,14 @@ def get_flag(cc):
     image = yield from resp.read()
     return image
 
+
 @asyncio.coroutine
 def download_one(cc):
     image = yield from get_flag(cc)
     show(cc)
     save_flag(image, cc.lower() + '.gif')
     return cc
+
 
 def download_many(cc_list):
     loop = asyncio.get_event_loop()
@@ -27,6 +30,6 @@ def download_many(cc_list):
 
     return len(res)
 
+
 if __name__ == '__main__':
     main(download_many)
-
