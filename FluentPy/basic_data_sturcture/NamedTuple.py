@@ -1,4 +1,5 @@
 from collections import namedtuple
+
 City = namedtuple('City', 'name country population coordinates')
 tokyo = City('Tokyo', 'JP', 36.9330, (35.6897222, 139.691667))
 print(tokyo)
@@ -21,11 +22,13 @@ NEEDLES = [0, 1, 2, 5, 8, 10, 22, 24, 29, 30, 31]
 
 ROW_FMT = '{0:2d} @ {1:2d}     {2}{0:<2d}'
 
+
 def demo(bisect_fn):
     for needle in reversed(NEEDLES):
         position = bisect_fn(HAYSTACK, needle)
         offset = position * '  | '
         print(ROW_FMT.format(needle, position, offset))
+
 
 if __name__ == '__main__':
 
@@ -39,11 +42,12 @@ if __name__ == '__main__':
     demo(bisect_fn)
 
 import random
+
 SIZE = 7
 random.seed(1729)
 
 my_list = []
 for i in range(SIZE):
-    new_item = random.randrange(SIZE*2)
+    new_item = random.randrange(SIZE * 2)
     bisect.insort(my_list, new_item)
     print('%2d ->' % new_item, my_list)
