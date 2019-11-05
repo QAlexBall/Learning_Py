@@ -7,4 +7,6 @@ cmake-build-debug/
 ipynb_checkpoints/
 .ipynb_checkpoints/
 .DS_Store
+Three_Part_Moudule/pytorch/MNIST/
+Three_Part_Moudule/pytorch/PennFudanPed/
 .ipynb_checkpoints/
