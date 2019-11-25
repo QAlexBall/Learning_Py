@@ -24,7 +24,7 @@ def gen_opener(filenames):
         if filename.endswith('.gz'):
             f = gzip.open(filename, 'rt')
         elif filename.endswith('.bz2'):
-            f = bz2.open(filenmae, 'rt')
+            f = bz2.open(filename, 'rt')
         else:
             f = open(filename, 'rt')
         yield f
