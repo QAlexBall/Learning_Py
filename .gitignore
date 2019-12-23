@@ -12,3 +12,5 @@ Three_Part_Moudule/pytorch/PennFudanPed/
 .ipynb_checkpoints/
 vision/
 Three_Part_Moudule/pytorch/data/
+Three_Part_Moudule/pytorch_lightning/quick_start/MNIST/
+Three_Part_Moudule/pytorch_lightning/quick_start/lightning_logs/
