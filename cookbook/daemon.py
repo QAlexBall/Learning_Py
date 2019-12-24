@@ -20,7 +20,7 @@ def daemonize(pidfile, *, stdin='/dev/null',
     os.chdir('/')  # change the current working directory to path
     os.umask(0)    # 设置当前数值掩码，并返回之前的掩码
     os.setsid()    # 设置当前进程的用户id
-    
+
     # Second fork (relinquish session leadership)
     try:
         if os.fork() > 0:
@@ -45,14 +45,19 @@ def daemonize(pidfile, *, stdin='/dev/null',
         print(os.getpid(), file=f)
     
     # Arrange to have the PID file removed on exit/signal
-    atexit.register(lambda: os.remove(pidfile))
+    atexit.register(lambda: os.remove(pidfile))  # atexit.register(func, *args, **kwargs) 
+                                                 # 将func注册为终止时执行的函数。任何传给func的可选的参数都应当作为参数传给register().
 
     # Sinal handler for termination (required)
     def sigterm_handler(signo, frame):
         raise SystemExit(1)
 
-    signal.signal(signal.SIGTERM, sigterm_handler)
-
+    signal.signal(signal.SIGTERM, sigterm_handler) 
+    """
+    signal提供了在Python中使用信号处理的机制
+    signal.signal()函数允许定义在接收信号时执行的自定义处理程序。少量的默认处理程序已经设置：
+    SIGPIPE 被忽略（因此管道和套接字上的写入错误可以报告为普通的Python异常
+    """
 
 def main():
     import time
