@@ -9,8 +9,8 @@ import asyncio
  
 
 RESTART_COMMAND_DICT = {
-    15432: "ssh -Nf -i ~/powerarena-swarm.pem -L 15432:localhost:5432 ubuntu@13.211.149.60",
-    58292: "ssh -Nf -L 58292:localhost:8292 -p 2222 support@www.hkdev.motherapp.com",
+    9006: "cmd"
+    9007: "cmd"
 }
 
 
@@ -51,7 +51,7 @@ def restart_ports_service(port_list):
 
 
 def main():
-    port_list = [15432, 58292]
+    port_list = [9006, 9007]
     while True:
         restart_ports_service(port_list)
         time.sleep(60 * 10)
