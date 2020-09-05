@@ -1,6 +1,18 @@
 # ansible simple example
 ---
-- hosts: freddy, chriszhu
-  tasks: 
+- hosts: remote
+  tasks:
     - name: "hello world!"
       shell: echo "Hello World" `date` by `hostname` > /tmp/hello.log
+
+    - name: "sudo test"
+      become: yes
+      become_method: sudo
+      shell: cat /etc/hosts
+      register: test
+
+    - name: "Debug test"
+      debug: var=test
+
+    - name: "Debug test.stdout as part of a string"
+      debug: "msg=The script's stdout was `{{ test.stdout }}`."

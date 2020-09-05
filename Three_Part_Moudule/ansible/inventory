@@ -1,0 +1,8 @@
+[remote]
+nb206-remote ansible_ssh_host=127.0.0.1 ansible_ssh_port=20622
+
+[remote:vars]
+ansible_user=support
+ansible_ssh_pass=mamaningbo
+ansible_sudo_pass=mamaningbo
+ansible_become_pass=mamaningbo
